@@ -1,61 +1,80 @@
-import React from 'react'
-import Title from '../components/Title';
-import { assets } from '../assets/assets';
-import NewsLetterBox from "../components/NewsLetterBox"
+import React from "react";
+import Title from "../components/Title";
+import { assets } from "../assets/assets";
+import NewsLetterBox from "../components/NewsLetterBox";
 
 const About = () => {
   return (
-    <div>
-      <div className='text-2xl text-center pt-8 border-t'>
-        <Title  text1={"ABOUT"} text2={"US"} />
-      </div>
+    <div className="px-4">
+      {/* About Section */}
+      <section className="text-2xl text-center pt-8 border-t">
+        <Title text1="ABOUT " text2="US" />
+      </section>
 
-      <div className='my-10 flex flex-col md:flex-row gap-16'>
-        <img className='w-full md:max-w-[450px]' src={assets.about_img} alt="" />
-        <div>
+      <section className="my-5 flex flex-col md:flex-row gap-16">
+        <img
+          className="w-full md:max-w-[450px] rounded-lg shadow-md"
+          src={assets.about_img}
+          alt="About Us"
+        />
+        <article className="space-y-4 text-gray-700 leading-relaxed">
           <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Laudantium facilis nemo fuga, soluta totam odio maxime eveniet nostrum sint modi. Temporibus, velit doloremque? Numquam repudiandae porro, odio quam obcaecati voluptatem.
-          Possimus quia velit at necessitatibus, perferendis nulla. Eum in nisi accusantium exercitationem possimus fuga numquam doloremque, officia commodi mollitia impedit aliquid cumque tempora alias rem eligendi suscipit maxime perferendis illo.
-          Debitis iusto exercitationem fuga consequuntur, in mollitia maxime officiis vel assumenda ducimus explicabo repellendus, odio nostrum porro placeat vitae deserunt? Reiciendis eos ratione unde minus ipsum, quisquam enim in deserunt?
-          Aspernatur, corrupti quia! Quisquam magnam ipsum autem expedita ut! Vitae nam ipsa quaerat ratione! Iste temporibus, error consequuntur obcaecati, id nisi veniam doloremque accusamus cum vitae, quibusdam pariatur illo et.
-          Molestiae mollitia nesciunt fugit sequi illum, expedita, possimus perferendis quis in dolorum quae eaque! Pariatur enim impedit magnam quia provident quibusdam, accusamus dolorem ab possimus animi aut error iste necessitatibus.
-
+            Welcome to our store! We are dedicated to providing top-quality
+            products that blend style, comfort, and affordability. Our journey
+            began with a simple mission: to make premium products accessible to
+            everyone without compromising on quality.
           </p>
           <p>
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Commodi, ex minima nam accusantium quia corporis, et provident quo consectetur, alias quos maiores esse. Delectus nostrum sequi rem odio dolores magnam.
-            Quo, nulla repellendus rerum, blanditiis dignissimos eveniet sint modi voluptatum, incidunt necessitatibus officiis aspernatur distinctio amet impedit corrupti. Accusamus sequi, consectetur quidem neque ducimus autem fuga ratione labore molestias illum.
-            Doloribus dolorem aliquid perferendis fuga praesentium odio magnam quaerat fugit sunt fugiat quibusdam harum maiores, delectus veritatis, recusandae rem, ducimus expedita adipisci nam a! Voluptatum tenetur praesentium velit nemo culpa.
+            Every item in our collection is carefully curated to meet the
+            highest standards. Whether you're looking for the latest trends or
+            timeless classics, we strive to bring you the best in the industry.
+            Customer satisfaction is at the heart of everything we do.
           </p>
-          <b className='text-gray-800'>Our Mission</b>
+          <h3 className="text-lg font-semibold text-gray-800 mt-6">Our Mission</h3>
           <p>
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Commodi, ex minima nam accusantium quia corporis, et provident quo consectetur, alias quos maiores esse. Delectus nostrum sequi rem odio dolores magnam.
-            Quo, nulla repellendus rerum, blanditiis dignissimos eveniet sint modi voluptatum, incidunt necessitatibus officiis aspernatur distinctio amet impedit corrupti. Accusamus sequi, consectetur quidem neque ducimus autem fuga ratione labore molestias illum.
-            Doloribus dolorem aliquid perferendis fuga praesentium odio magnam quaerat fugit sunt fugiat quibusdam harum maiores, delectus veritatis, recusandae rem, ducimus expedita adipisci nam a! Voluptatum tenetur praesentium velit nemo culpa.
+            Our mission is to provide an unparalleled shopping experience by
+            delivering high-quality products with exceptional customer service.
+            We believe that shopping should be enjoyable and stress-free, which
+            is why we focus on convenience, affordability, and reliability.  
+            We are committed to innovation and continuously improving our
+            offerings to meet your needs.
           </p>
-        </div>
-      </div>
+        </article>
+      </section>
 
-    <div className='text-2xl py-4'>
-      <Title text1={'WHY '} text2={"CHOOSE US"}/>
-    </div>
+      {/* Why Choose Us Section */}
+      <section className="text-xl text-center py-6">
+        <Title text1="WHY " text2="CHOOSE US" />
+      </section>
 
-    <div className='flex flex-col md:flex-row text-sm mb-20'>
-      <div className='border px-10 md:px-16 py-8 sm:py-20 flex flex-col gap-5'>
-          <b>Quality Assurance:</b>
-          <p className=''>Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus ipsam quos ullam minima reiciendis vel, optio saepe tempora voluptatibus fuga temporibus eius culpa, laboriosam nemo quod aliquid tenetur dicta eaque?</p>
-      </div>
-      <div className='border px-10 md:px-16 py-8 sm:py-20 flex flex-col gap-5'>
-          <b>Convenience:</b>
-          <p className=''>Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus ipsam quos ullam minima reiciendis vel, optio saepe tempora voluptatibus fuga temporibus eius culpa, laboriosam nemo quod aliquid tenetur dicta eaque?</p>
-      </div>
-      <div className='border px-10 md:px-16 py-8 sm:py-20 flex flex-col gap-5'>
-          <b>Exception Customer Service:</b>
-          <p className=''>Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus ipsam quos ullam minima reiciendis vel, optio saepe tempora voluptatibus fuga temporibus eius culpa, laboriosam nemo quod aliquid tenetur dicta eaque?</p>
-      </div>
-    </div>
-    <NewsLetterBox />
-    </div>
-  )
-}
+      <section className="flex flex-col md:flex-row gap-8 text-sm mb-20">
+        {[
+          {
+            title: "Quality Assurance",
+            text: "We prioritize quality in every product we offer. Our team meticulously selects and tests each item to ensure it meets our high standards. We believe that quality should never be compromised, no matter the price.",
+          },
+          {
+            title: "Convenience",
+            text: "Shopping with us is easy and hassle-free. Our user-friendly website, secure payment options, and efficient delivery services ensure that you get what you need quickly and smoothly. We make sure your shopping experience is as seamless as possible.",
+          },
+          {
+            title: "Exceptional Customer Service",
+            text: "Our customers are our top priority. Our dedicated support team is always ready to assist you with any inquiries, returns, or concerns. We value your trust and aim to build long-term relationships through reliable service and personalized support.",
+          },
+        ].map((item, index) => (
+          <div
+            key={index}
+            className="border px-10 md:px-16 py-8 sm:py-20 flex flex-col gap-5 bg-gray-50 rounded-lg shadow-md"
+          >
+            <h3 className="text-lg font-semibold text-gray-800">{item.title}</h3>
+            <p className="text-gray-600">{item.text}</p>
+          </div>
+        ))}
+      </section>
 
-export default About
+      <NewsLetterBox />
+    </div>
+  );
+};
+
+export default About;
