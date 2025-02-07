@@ -5,3 +5,9 @@
     color:white
 
 }
+
+select,input,textarea{
+    border:1px solid gray;
+    outline-color: black;
+    border-radius:4px
+}
