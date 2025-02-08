@@ -90,7 +90,6 @@ const ShopContextProvider = (props) => {
             const response = await axios.get(backendUrl + '/api/product/list');
             if (response.data.success) {
                 setProducts(response.data.products);
-                console.log(response.data.products); // Check if ids are available
             } else {
                 toast.error(response.data.message);
             }
