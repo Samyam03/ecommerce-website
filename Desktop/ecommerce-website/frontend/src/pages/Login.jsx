@@ -1,11 +1,52 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
+import { ShopContext } from '../context/ShopContext';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const Login = () => {
-  const [currentState, setCurrentState] = useState('Sign Up');
+  const [currentState, setCurrentState] = useState('Login');
+  const { token, setToken, navigate, backendUrl } = useContext(ShopContext);
+
+  const [name, setName] = useState('');
+  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();
+
+    try {
+      if (currentState === 'Sign Up') {
+        const response = await axios.post(backendUrl + '/api/user/register', { name, email, password });
+        if (response.data.success) {
+          setToken(response.data.token);
+          localStorage.setItem('token', response.data.token);
+          toast.success('Account created successfully');
+        } else {
+          toast.error(response.data.message);
+        }
+      } else {
+        const response = await axios.post(backendUrl + '/api/user/login', { email, password });
+        if (response.data.success) {
+          setToken(response.data.token);
+          localStorage.setItem('token', response.data.token);
+          localStorage.setItem('userId', response.data.user._id); // Store userId
+          console.log('Storing userId:', response.data.user._id); // Debugging
+          toast.success('Logged in successfully');
+        } else {
+          toast.error(response.data.message);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+    }
   };
+
+  useEffect(() => {
+    if (token) {
+      navigate('/');
+    }
+  }, [token]);
 
   return (
     <div className="flex items-center justify-center bg-gray-100 h-160">
@@ -18,6 +59,8 @@ const Login = () => {
 
         {currentState === 'Login' ? null : (
           <input 
+            onChange={(event) => setName(event.target.value)}
+            value={name}
             type="text" 
             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black" 
             placeholder="Name" 
@@ -26,6 +69,8 @@ const Login = () => {
         )}
 
         <input 
+          onChange={(event) => setEmail(event.target.value)}
+          value={email}
           type="email" 
           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black" 
           placeholder="Email" 
@@ -33,6 +78,8 @@ const Login = () => {
         />
 
         <input 
+          onChange={(event) => setPassword(event.target.value)}
+          value={password}
           type="password" 
           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black" 
           placeholder="Password" 
@@ -67,6 +114,6 @@ const Login = () => {
       </form>
     </div>
   );
-}
+};
 
 export default Login;

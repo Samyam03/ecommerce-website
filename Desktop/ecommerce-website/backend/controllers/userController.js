@@ -9,33 +9,40 @@ const createToken = (id) => {
 
 // Route for user login
 const loginUser = async (req, res) => {
-    // Placeholder for login functionality
-    try{
+    try {
+        const { email, password } = req.body;
 
-        const{email,password}=req.body;
-        const user = await userModel.findOne({email});
-
-        if(!user){
-            return res.json({success:false, message:"User does not exist"})
+        // Find the user by email
+        const user = await userModel.findOne({ email });
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'User not found' });
         }
 
-        const isMatch = await bcrypt.compare(password, user.password);
+        // Verify the password
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (!isPasswordValid) {
+            return res.status(400).json({ success: false, message: 'Invalid password' });
+        }
 
-        if(isMatch){
-            const token = createToken(user._id)
-            res.json({success:true,token})
-        }
-        
-        else{
-            res.json({success:false, message:"Invalid credentials"})
-        }
+        // Generate a JWT token
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+        // Send the response
+        res.status(200).json({
+            success: true,
+            message: 'Login successful',
+            token,
+            user: {
+                _id: user._id, // Include userId
+                email: user.email,
+                name: user.name,
+            },
+        });
+    } catch (error) {
+        console.error('Error in loginUser:', error);
+        res.status(500).json({ success: false, message: 'Internal server error' });
     }
-    catch(error){
-        console.log(error);
-        res.json({success:false, message: error.message})
-
-    }
-}
+};
 
 // Route for user registration
 const registerUser = async (req, res) => {
