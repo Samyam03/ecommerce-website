@@ -17,6 +17,7 @@ const ShopContextProvider = (props) => {
     const [cartItems, setCartItems] = useState({});
     const [products, setProducts] = useState([]);
     const [token, setToken] = useState(localStorage.getItem('token') || '');
+    const [userId, setUserId] = useState(localStorage.getItem('userId') || '');
     const navigate = useNavigate();
 
     // Add item to cart
@@ -164,10 +165,11 @@ const ShopContextProvider = (props) => {
 
     // Set the token from localStorage on component mount
     useEffect(() => {
-        if (!token && localStorage.getItem('token')) {
-            setToken(localStorage.getItem('token'));
-        }
-    }, []);
+    const storedToken = localStorage.getItem('token');
+    const storedUserId = localStorage.getItem('userId');
+    if (storedToken) setToken(storedToken);
+    if (storedUserId) setUserId(storedUserId);
+}, []);
 
     // Provide the context value to children
     const value = {
@@ -188,6 +190,8 @@ const ShopContextProvider = (props) => {
         backendUrl,
         token,
         setToken,
+        userId,
+        setUserId
     };
 
     return (

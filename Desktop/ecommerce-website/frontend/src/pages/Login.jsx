@@ -24,7 +24,8 @@ const Login = () => {
         } else {
           toast.error(response.data.message);
         }
-      } else {
+      } 
+      else {
         const response = await axios.post(backendUrl + '/api/user/login', { email, password });
         if (response.data.success) {
           setToken(response.data.token);
@@ -33,12 +34,12 @@ const Login = () => {
           console.log('Storing userId:', response.data.user._id); // Debugging
           toast.success('Logged in successfully');
         } else {
-          toast.error(response.data.message);
+          toast.error("You have entered an invalid email or password");
         }
       }
     } catch (error) {
       console.log(error);
-      toast.error(error.message);
+      toast.error("The user with the provided email does not exist");
     }
   };
 

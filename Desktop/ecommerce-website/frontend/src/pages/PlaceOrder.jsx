@@ -1,14 +1,23 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react'; // Add useEffect
 import Title from '../components/Title';
 import CartTotal from '../components/CartTotal';
 import { assets } from '../assets/assets';
 import { ShopContext } from '../context/ShopContext';
 import { toast } from 'react-toastify';
+import axios from 'axios';
 
 const PlaceOrder = () => {
   const [method, setMethod] = useState("COD");
-  const { navigate, cartItems, products } = useContext(ShopContext);
-  
+  const { products, delivery_fee, cartItems, setCartItems, getCartAmount, navigate, backendUrl, token, userId, setUserId } = useContext(ShopContext);
+
+  // Sync userId from local storage on component mount
+  useEffect(() => {
+    const storedUserId = localStorage.getItem("userId");
+    if (storedUserId) {
+      setUserId(storedUserId); // Update userId in context
+    }
+  }, [setUserId]); // Dependency on setUserId to avoid unnecessary re-renders
+
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -27,17 +36,17 @@ const PlaceOrder = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const onSubmitHandler = (event) => {
+  const onSubmitHandler = async (event) => {
     event.preventDefault();
-    
+
     try {
       let orderItems = [];
-      
+
       for (const itemId in cartItems) {
         for (const size in cartItems[itemId]) {
           if (cartItems[itemId][size] > 0) {
             const itemInfo = products.find(product => product._id === itemId);
-            if (itemInfo) { 
+            if (itemInfo) {
               orderItems.push({
                 ...itemInfo,
                 size: size,
@@ -47,8 +56,41 @@ const PlaceOrder = () => {
           }
         }
       }
-      console.log(orderItems); // Ensure this logs correctly
-      
+
+      let orderData = {
+        userId: userId, // Use userId from context
+        address: formData,
+        items: orderItems,
+        amount: getCartAmount() + delivery_fee
+      };
+
+      switch (method) {
+        // Api calls for COD
+        case 'COD':
+          const response = await axios.post(
+            `${backendUrl}/api/order/place`,
+            orderData,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
+          if (response.data.success) {
+            setCartItems({});
+            navigate('/orders', { state: { orderItems } });
+          } else {
+            console.error('Error processing order:', response.data.message);
+            toast.error(response.data.message);
+          }
+          break;
+
+        default:
+          // Api call for stripe/razorpay
+          break;
+      }
+
       // Navigate to orders page with orderItems
       navigate('/orders', { state: { orderItems } });
     } catch (error) {

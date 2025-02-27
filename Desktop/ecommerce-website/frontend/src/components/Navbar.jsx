@@ -6,16 +6,17 @@ import { toast } from 'react-toastify';
 
 const Navbar = () => {
   const [visible, setVisible] = useState(false);
-  const { setShowSearch, getCartCount,navigate,token,setToken,setCartItems } = useContext(ShopContext);
+  const { setShowSearch, getCartCount, navigate, token, setToken, setCartItems, setUserId, userId } = useContext(ShopContext);
 
-  const logout=()=>{
-      navigate('/login');
-      toast.success('Logged out successfully');
-      localStorage.removeItem('token');
-      setToken('');
-      setCartItems({});
-      
-  }
+  const logout = () => {
+    navigate('/login');
+    toast.success('Logged out successfully');
+    localStorage.removeItem('token');
+    localStorage.removeItem('userId');
+    setUserId('');
+    setToken('');
+    setCartItems({});
+  };
 
   // Get the current location/path
   const location = useLocation();
@@ -77,18 +78,22 @@ const Navbar = () => {
 
           {/* Profile Dropdown */}
           <div className='group relative'>
-            
-              <img onClick={()=> token ? null: navigate('/login')} src={assets.profile_icon} className='w-6 cursor-pointer transition-all hover:opacity-80' alt="Profile Icon" />
+            <img 
+              onClick={() => (token&&userId) ? null : navigate('/login')} 
+              src={assets.profile_icon} 
+              className='w-6 cursor-pointer transition-all hover:opacity-80' 
+              alt="Profile Icon" 
+            />
             {/* Dropdown */}
-            {token &&
-            <div className='group-hover:block hidden absolute right-0 pt-4'>
-              <div className='flex flex-col gap-2 w-36 py-4 px-6 bg-white shadow-lg rounded-lg text-gray-600'>
-                <p className='cursor-pointer hover:text-black'>My Profile</p>
-                <p onClick={()=>navigate('/orders')} className='cursor-pointer hover:text-black'>Orders</p>
-                <p onClick={logout} className='cursor-pointer hover:text-black'>Logout</p>
+            {(token&&userId) && (
+              <div className='group-hover:block hidden absolute right-0 pt-4'>
+                <div className='flex flex-col gap-2 w-36 py-4 px-6 bg-white shadow-lg rounded-lg text-gray-600'>
+                  <p className='cursor-pointer hover:text-black'>My Profile</p>
+                  <p onClick={() => navigate('/orders')} className='cursor-pointer hover:text-black'>Orders</p>
+                  <p onClick={logout} className='cursor-pointer hover:text-black'>Logout</p>
+                </div>
               </div>
-            </div>}
-
+            )}
           </div>
 
           {/* Cart Icon with Count */}
