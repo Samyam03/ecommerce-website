@@ -10,11 +10,12 @@ const authUser = async (req, res, next) => {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         req.user = decoded;
         next();
-    } catch (error) {
-        console.error('Token Verification Error:', error);
+    } 
+    catch (error) {
         if (error.name === 'TokenExpiredError') {
             return res.status(401).json({ success: false, message: 'Session expired. Please log in again.' });
-        } else {
+        } 
+        else {
             return res.status(401).json({ success: false, message: 'Invalid token. Please log in again.' });
         }
     }

@@ -86,6 +86,23 @@ const PlaceOrder = () => {
           }
           break;
 
+        case 'stripe':
+          
+          const responseStripe = await axios.post(`${backendUrl}/api/order/stripe`, orderData, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          if(responseStripe.data.success){
+            const {session_url} = responseStripe.data;
+            window.location.replace(session_url);
+          }
+          else{
+            console.log(responseStripe.data.message);
+            toast.error(responseStripe.data.message);
+          }
+          break;
+
         default:
           // Api call for stripe/razorpay
           break;
@@ -93,7 +110,8 @@ const PlaceOrder = () => {
 
       // Navigate to orders page with orderItems
       navigate('/orders', { state: { orderItems } });
-    } catch (error) {
+    } 
+    catch (error) {
       console.error('Error processing order:', error);
       toast.error('Failed to process order');
     }

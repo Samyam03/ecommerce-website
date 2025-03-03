@@ -8,7 +8,7 @@ import RelatedProducts from '../components/RelatedProducts';
 const Product = () => {
     const { productId } = useParams();
     const { products, currency, addToCart } = useContext(ShopContext);
-    const [productData, setProductData] = useState(false);
+    const [productData, setProductData] = useState(null);
     const [image, setImage] = useState("");
     const [size, setSize] = useState('');
 
@@ -21,26 +21,30 @@ const Product = () => {
     }
 
     useEffect(() => {
-        fetchProductData();
-    }, [productId]);
+        if (products.length > 0) {
+            fetchProductData();
+        }
+    }, [productId, products]); // Added products to dependency array
 
-    return productData ? (
-        <div className="border-t-2 pt-10 transition-opacity ease-in duration-500 opacity-100">
+    if (!productData) {
+        return <div className="h-screen"></div>; // Loading state
+    }
+
+    return (
+        <div className="border-t-2 pt-10">
             <div className="flex gap-12 sm:gap-12 flex-col sm:flex-row">
                 {/* Product Images */}
                 <div className="flex-1 flex flex-col-reverse gap-3 sm:flex-row">
                     <div className="flex sm:flex-col overflow-x-auto overflow-y-scroll justify-between sm:justify-normal sm:w-[18.7%] w-full">
-                        {
-                            productData.image.map((item, index) => (
-                                <img
-                                    onClick={() => setImage(item)}
-                                    src={item}
-                                    key={index}
-                                    className="w-[24%] sm:w-full sm:mb-3 flex-shrink-0 cursor-pointer"
-                                    alt=""
-                                />
-                            ))
-                        }
+                        {productData.image.map((item, index) => (
+                            <img
+                                onClick={() => setImage(item)}
+                                src={item}
+                                key={index}
+                                className="w-[24%] sm:w-full sm:mb-3 flex-shrink-0 cursor-pointer"
+                                alt=""
+                            />
+                        ))}
                     </div>
                     <div className="w-full sm:w-[80%]">
                         <img className="w-full h-auto" src={image} alt="" />
@@ -124,8 +128,6 @@ const Product = () => {
             {/* Related Products */}
             <RelatedProducts category={productData.category} subCategory={productData.subCategory} />
         </div>
-    ) : (
-        <div className="opacity-0"></div>
     );
 }
 
