@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react'; // Add useEffect
+import React, { useState, useContext, useEffect } from 'react';
 import Title from '../components/Title';
 import CartTotal from '../components/CartTotal';
 import { assets } from '../assets/assets';
@@ -16,7 +16,7 @@ const PlaceOrder = () => {
     if (storedUserId) {
       setUserId(storedUserId); // Update userId in context
     }
-  }, [setUserId]); // Dependency on setUserId to avoid unnecessary re-renders
+  }, [setUserId]);
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -65,7 +65,6 @@ const PlaceOrder = () => {
       };
 
       switch (method) {
-        // Api calls for COD
         case 'COD':
           const response = await axios.post(
             `${backendUrl}/api/order/place`,
@@ -87,31 +86,33 @@ const PlaceOrder = () => {
           break;
 
         case 'stripe':
-          
-          const responseStripe = await axios.post(`${backendUrl}/api/order/stripe`, orderData, {
-            headers: {
-              Authorization: `Bearer ${token}`,
+          const responseStripe = await axios.post(
+            `${backendUrl}/api/order/stripe`,
+            {
+              ...orderData,
+              origin: window.location.origin // Pass the origin for redirect URLs
             },
-          });
-          if(responseStripe.data.success){
-            const {session_url} = responseStripe.data;
-            window.location.replace(session_url);
-          }
-          else{
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
+          if (responseStripe.data.success) {
+            const { session_url } = responseStripe.data;
+            window.location.replace(session_url); // Redirect to Stripe checkout
+          } else {
             console.log(responseStripe.data.message);
             toast.error(responseStripe.data.message);
           }
           break;
 
         default:
-          // Api call for stripe/razorpay
+          toast.error('Payment method not supported');
           break;
       }
-
-      // Navigate to orders page with orderItems
-      navigate('/orders', { state: { orderItems } });
-    } 
-    catch (error) {
+    } catch (error) {
       console.error('Error processing order:', error);
       toast.error('Failed to process order');
     }
@@ -182,7 +183,7 @@ const PlaceOrder = () => {
           </div>
 
           <div className='w-full text-end mt-8'>
-            <button type='submit' onClick={handlePlaceOrder} className='bg-black text-white px-16 py-3 text-sm'>Place Order</button>
+            <button type='submit' onClick={handlePlaceOrder} className='bg-black text-white px-16 py-3 text-sm cursor-pointer'>Place Order</button>
           </div>
         </div>
       </div>
