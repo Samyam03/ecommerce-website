@@ -66,10 +66,14 @@ const placeOrderStripe = async (req, res) => {
             quantity: 1
         });
 
+        // Encode the query parameters
+        const successUrl = `${origin}/verify?success=true&userId=${encodeURIComponent(userId)}&items=${encodeURIComponent(JSON.stringify(items))}&amount=${encodeURIComponent(amount)}&address=${encodeURIComponent(JSON.stringify(address))}`;
+        const cancelUrl = `${origin}/verify?success=false`;
+
         // Create a Stripe session
         const session = await stripe.checkout.sessions.create({
-            success_url: `${origin}/verify?success=true&userId=${userId}&items=${JSON.stringify(items)}&amount=${amount}&address=${JSON.stringify(address)}`,
-            cancel_url: `${origin}/verify?success=false`,
+            success_url: successUrl,
+            cancel_url: cancelUrl,
             line_items,
             mode: "payment"
         });
