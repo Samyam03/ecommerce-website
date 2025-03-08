@@ -1,56 +1,80 @@
-import React, { useEffect } from 'react';
-import { useContext } from 'react';
-import { ShopContext } from '../context/ShopContext';
-import { useSearchParams } from 'react-router-dom';
+import React, { useEffect, useState, useContext } from 'react';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { ShopContext } from '../context/ShopContext';
 
 const Verify = () => {
-  const { navigate, token, setCartItems, backendUrl } = useContext(ShopContext);
-  const [searchParams] = useSearchParams();
+    const [searchParams] = useSearchParams();
+    const navigate = useNavigate();
+    const [loading, setLoading] = useState(true);
 
-  const success = searchParams.get('success');
-  const userId = searchParams.get('userId');
-  const items = searchParams.get('items');
-  const amount = searchParams.get('amount');
-  const address = searchParams.get('address');
+    const session_id = searchParams.get('session_id');
+    const canceled = searchParams.get('canceled');
 
-  const verifyPayment = async () => {
-    try {
-      if (!token) {
-        return null;
-      }
+    // Use ShopContext to access backendUrl, token, and setCartItems
+    const { backendUrl, token, setCartItems } = useContext(ShopContext);
 
-      const response = await axios.post(
-        `${backendUrl}/api/order/verifyStripe`,
-        { success, userId, items, amount, address },
-        {
-          headers: { Authorization: `Bearer ${token}` }
+    const verifyPayment = async () => {
+        setLoading(true);
+        try {
+            // Validate session_id
+            if (!session_id || !session_id.startsWith('cs_')) {
+                toast.error('Invalid session ID. Please try again.');
+                navigate('/cart');
+                return;
+            }
+
+            // Verify payment with backend
+            const response = await axios.post(
+                `${backendUrl}/api/order/verifyStripe`,
+                { session_id },
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                }
+            );
+
+            if (response.data.success) {
+                toast.success('Payment successful! Your order has been placed.');
+                setCartItems({}); // Clear the cart
+                navigate('/orders'); // Redirect to orders page
+            } else {
+                toast.error('Payment verification failed. Please contact support.');
+                navigate('/cart');
+            }
+        } catch (error) {
+            console.error('Verification Error:', error);
+            toast.error(
+                error.response?.data?.message ||
+                error.message ||
+                'An error occurred during verification.'
+            );
+            navigate('/cart');
+        } finally {
+            setLoading(false);
         }
-      );
+    };
 
-      if (response.data.success) {
-        setCartItems({});
-        navigate('/orders');
-      } else {
-        navigate('/cart');
-      }
-    } catch (error) {
-      console.log(error);
-      toast.error(error.message);
-    }
-  };
+    useEffect(() => {
+        if (canceled === 'true') {
+            toast.error('Payment was canceled. Please try again.');
+            navigate('/cart');
+            return;
+        }
+        if (session_id) {
+            verifyPayment();
+        }
+    }, [session_id, canceled]);
 
-  useEffect(() => {
-    verifyPayment();
-  }, [token]);
-
-  return (
-    <div>
-      {/* You can add a loading spinner or message here */}
-      <p>Verifying payment...</p>
-    </div>
-  );
+    return (
+        <div>
+            {loading ? (
+                <p>Verifying payment...</p>
+            ) : (
+                <p>Verification complete.</p>
+            )}
+        </div>
+    );
 };
 
 export default Verify;
