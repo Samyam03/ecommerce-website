@@ -9,7 +9,7 @@ const addToCart = async (req, res) => {
 
         // Validate inputs
         if (!userId || !itemId || !size) {
-            return res.status(400).json({ success: false, message: 'Missing required fields' });
+            return res.status(400).json({ success: false, message: 'Please select the size' });
         }
 
         // Validate userId

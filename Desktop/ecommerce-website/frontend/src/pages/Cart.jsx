@@ -7,6 +7,8 @@ import CartTotal from '../components/CartTotal';
 const Cart = () => {
   const { products, currency, cartItems, updateQuantity, navigate } = useContext(ShopContext);
   const [cartData, setCartData] = useState([]);
+  const [isEditing, setIsEditing] = useState(false); // Track if the user is editing
+  const [editedItem, setEditedItem] = useState(null); // Track the item being edited
 
   useEffect(() => {
     const tempData = [];
@@ -23,6 +25,22 @@ const Cart = () => {
     }
     setCartData(tempData);
   }, [cartItems]);
+
+  // Handle input change
+  const handleQuantityChange = (item, value) => {
+    setIsEditing(true); // User is editing
+    setEditedItem({ ...item, quantity: value }); // Store the edited item
+  };
+
+  // Handle input blur (when the user leaves the input field)
+  const handleBlur = () => {
+    if (isEditing && editedItem) {
+      // Update the quantity only when the user leaves the input field
+      updateQuantity(editedItem.id, editedItem.size, Number(editedItem.quantity));
+      setIsEditing(false); // Reset editing state
+      setEditedItem(null); // Reset edited item
+    }
+  };
 
   return (
     <div className="border-t pt-14">
@@ -59,7 +77,8 @@ const Cart = () => {
                 </div>
 
                 <input
-                  onChange={(event) => event.target.value === '' || event.target.value === '0' ? null : updateQuantity(item.id, item.size, Number(event.target.value))}
+                  onChange={(event) => handleQuantityChange(item, event.target.value)}
+                  onBlur={handleBlur} // Trigger when the user leaves the input field
                   className="border max-w-10 sm:max-w-20 px-1 sm:px-2 py-1"
                   type="number"
                   min={1}

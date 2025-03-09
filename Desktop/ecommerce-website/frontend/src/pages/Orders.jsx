@@ -41,7 +41,7 @@ const Orders = () => {
 
   // Calculate total amount for each order
   const calculateTotalAmount = (items) => {
-    return items.reduce((total, item) => total + (item.price * item.quantity), 0);
+    return items.reduce((total, item) => total + (parseFloat(item.price) * item.quantity), 0);
   };
 
   return (
@@ -79,7 +79,7 @@ const Orders = () => {
                           {item.image?.length > 0 ? (
                             <img className='w-full h-full object-cover rounded-lg' src={item.image[0]} alt={item.name} />
                           ) : (
-                            <img className='w-full h-full object-cover rounded-lg' src="placeholder-image-url" alt="No image" />
+                            <div className='w-full h-full bg-gray-100 rounded-lg' />
                           )}
                         </div>
                         <div className='flex-1'>
@@ -90,7 +90,10 @@ const Orders = () => {
                           </div>
                         </div>
                       </div>
-                      <p className='text-lg font-semibold text-gray-800'>{currency}{item.price}</p>
+                      {/* Fixed price display */}
+                      <p className='text-lg font-semibold text-gray-800'>
+                        {currency}{(parseFloat(item.price) * item.quantity).toFixed(2)}
+                      </p>
                     </div>
                   ))}
                 </div>
@@ -101,7 +104,10 @@ const Orders = () => {
                     <p className='text-sm text-gray-500'>
                       Order Placed: <span className='text-gray-700'>{new Date(order.date).toLocaleDateString()}</span>
                     </p>
-                    <p className='text-xl font-bold text-gray-900'>Total: {currency}{totalAmount.toFixed(2)}</p>
+                    {/* Fixed total display */}
+                    <p className='text-xl font-bold text-gray-900'>
+                      Total: {currency}{totalAmount.toFixed(2)}
+                    </p>
                   </div>
                 </div>
               </div>
