@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom"; // Import Link from react-router-dom
 import { assets } from "../assets/assets";
 
 const Footer = () => {
@@ -6,7 +7,7 @@ const Footer = () => {
     const companyLinks = [
         { text: "Home", href: "/" },
         { text: "About Us", href: "/about" },
-        { text: "Delivery", href: "/" },
+        { text: "Delivery", href: "/orders" },
         { text: "Privacy Policy", href: "/" },
     ];
 
@@ -40,12 +41,12 @@ const Footer = () => {
                         <ul className="flex flex-col gap-1 text-gray-600">
                             {companyLinks.map((link, index) => (
                                 <li key={index}>
-                                    <a
-                                        href={link.href}
+                                    <Link
+                                        to={link.href}
                                         className="hover:text-gray-800 transition-colors duration-200"
                                     >
                                         {link.text}
-                                    </a>
+                                    </Link>
                                 </li>
                             ))}
                         </ul>

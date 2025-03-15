@@ -14,35 +14,62 @@ const Orders = ({ token }) => {
     }
 
     try {
-      const response = await axios.post(`${backendUrl}/api/order/list`, {}, { headers: { token } });
+      console.log('Admin: Fetching all orders at:', new Date().toLocaleTimeString());
+      
+      const response = await axios.post(
+        `${backendUrl}/api/order/list`, 
+        {}, 
+        { 
+          headers: { token },
+          // Add cache-busting parameter
+          params: { timestamp: new Date().getTime() }
+        }
+      );
+      
       if (response.data.success) {
-        setOrders(response.data.orders);
+        console.log('Admin: Received', response.data.orders.length, 'orders');
+        // Sort orders by date, newest first
+        const sortedOrders = response.data.orders.sort((a, b) => new Date(b.date) - new Date(a.date));
+        setOrders(sortedOrders);
       } else {
-        toast.error(response.data.message);
+        console.error('Error fetching orders:', response.data.message);
+        toast.error(response.data.message || 'Failed to fetch orders');
       }
     } catch (error) {
-      console.log(error);
-      toast.error(error.message);
+      console.error('Error fetching orders:', error);
+      toast.error(error.message || 'An error occurred while fetching orders');
     }
   };
 
-  const statusHandler = async (event,orderId) => {
-        try{
-          const response = await axios.post(`${backendUrl}/api/order/status`, {orderId, status:event.target.value}, { headers: { token } });
-          if (response.data.success) {
-            await fetchAllOrders();
-          } 
-          else {
-            console.log(response.data.message);
-            toast.error(response.data.message);
-          }
-
+  const statusHandler = async (event, orderId) => {
+    try {
+      const status = event.target.value;
+      
+      // Show updating feedback
+      toast.info(`Updating order to "${status}"...`, { autoClose: 2000 });
+      
+      const response = await axios.post(
+        `${backendUrl}/api/order/status`, 
+        { orderId, status },
+        { 
+          headers: { token },
+          // Add cache-busting parameter to prevent caching
+          params: { timestamp: new Date().getTime() }
         }
-        catch(error){
-          console.log(error);
-          toast.error(error.message);
-
-        }
+      );
+      
+      if (response.data.success) {
+        toast.success(`Order updated to "${status}" successfully!`);
+        // Re-fetch orders to ensure UI is in sync with backend
+        await fetchAllOrders();
+      } else {
+        console.error("Error updating order:", response.data.message);
+        toast.error(response.data.message || "Failed to update order status");
+      }
+    } catch (error) {
+      console.error("Error updating order status:", error);
+      toast.error(error.message || "An error occurred while updating order status");
+    }
   };
 
   useEffect(() => {
@@ -119,8 +146,8 @@ const Orders = ({ token }) => {
                 {order.amount}
               </p>
               <select
-                onChange={(event) => statusHandler(event,order._id)}
-              value={order.status}
+                onChange={(event) => statusHandler(event, order._id)}
+                value={order.status}
                 className="w-48 px-3 py-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
               >
                 <option value="Order Placed">Order Placed</option>

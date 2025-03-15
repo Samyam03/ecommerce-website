@@ -192,11 +192,19 @@ const verifyStripe = async (req, res) => {
 // Get all orders (for admin panel)
 const allOrders = async (req, res) => {
     try {
-        const orders = await orderModel.find({});
-        res.json({ success: true, orders });
+        // Use lean() for better performance and add sort for consistency
+        const orders = await orderModel.find({})
+            .sort({ date: -1 }) // Sort by date descending (newest first)
+            .lean();
+            
+        res.json({ 
+            success: true, 
+            orders,
+            timestamp: new Date().toISOString() // Adding timestamp for tracking
+        });
     } catch (error) {
-        console.log(error);
-        res.json({ success: false, message: error.message });
+        console.error("Error fetching all orders:", error);
+        res.status(500).json({ success: false, message: error.message });
     }
 };
 
@@ -204,12 +212,27 @@ const allOrders = async (req, res) => {
 const userOrders = async (req, res) => {
     try {
         const { userId } = req.body;
+        
+        if (!userId) {
+            return res.status(400).json({ 
+                success: false, 
+                message: "User ID is required" 
+            });
+        }
 
-        const orders = await orderModel.find({ userId });
-        res.json({ success: true, orders });
+        // Use lean() for better performance and add sort for consistency
+        const orders = await orderModel.find({ userId })
+            .sort({ date: -1 }) // Sort by date descending (newest first)
+            .lean();
+            
+        res.json({ 
+            success: true, 
+            orders,
+            timestamp: new Date().toISOString() // Adding timestamp for tracking
+        });
     } catch (error) {
-        console.log(error);
-        res.json({ success: false, message: error.message });
+        console.error("Error fetching user orders:", error);
+        res.status(500).json({ success: false, message: error.message });
     }
 };
 
@@ -217,11 +240,35 @@ const userOrders = async (req, res) => {
 const updateOrderStatus = async (req, res) => {
     try {
         const { orderId, status } = req.body;
-        await orderModel.findByIdAndUpdate(orderId, { status });
-        res.json({ success: true, message: "Order Status Updated Successfully" });
+        
+        if (!orderId || !status) {
+            return res.status(400).json({ 
+                success: false, 
+                message: "Order ID and status are required" 
+            });
+        }
+        
+        const updatedOrder = await orderModel.findByIdAndUpdate(
+            orderId, 
+            { status }, 
+            { new: true, runValidators: true }
+        );
+        
+        if (!updatedOrder) {
+            return res.status(404).json({ 
+                success: false, 
+                message: "Order not found" 
+            });
+        }
+        
+        res.json({ 
+            success: true, 
+            message: "Order Status Updated Successfully",
+            order: updatedOrder
+        });
     } catch (error) {
-        console.log(error);
-        res.json({ success: false, message: error.message });
+        console.error("Error updating order status:", error);
+        res.status(500).json({ success: false, message: error.message });
     }
 };
 

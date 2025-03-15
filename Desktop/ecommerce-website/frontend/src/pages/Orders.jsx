@@ -6,34 +6,69 @@ import axios from 'axios';
 const Orders = () => {
   const { backendUrl, token, currency } = useContext(ShopContext);
   const [orderData, setOrderData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [lastFetchTime, setLastFetchTime] = useState(null);
 
-  const loadOrderData = async () => {
+  const loadOrderData = async (showLoading = true) => {
     try {
       if (!token) {
         console.error('No token found');
         return;
       }
+      
+      if (showLoading) {
+        setLoading(true);
+      }
+      
+      console.log('Fetching orders at:', new Date().toLocaleTimeString());
+      
       const response = await axios.post(
         `${backendUrl}/api/order/userorders`,
         { userId: localStorage.getItem('userId') },
-        { headers: { Authorization: `Bearer ${token}` } }
+        { 
+          headers: { Authorization: `Bearer ${token}` },
+          // Add cache-busting parameter to prevent caching
+          params: { timestamp: new Date().getTime() }
+        }
       );
+      
+      console.log('Orders received:', response.data.orders.length, 'Server timestamp:', response.data.timestamp);
+      
       const sortedOrders = response.data.orders.sort((a, b) => new Date(b.date) - new Date(a.date));
       setOrderData(sortedOrders);
+      setLastFetchTime(new Date());
     } catch (error) {
       console.error('Error fetching orders:', error);
+    } finally {
+      if (showLoading) {
+        setLoading(false);
+      }
     }
   };
 
+  // Initial load
   useEffect(() => {
-    loadOrderData();
+    if (token) {
+      loadOrderData();
+    }
+  }, [token]);
+
+  // More frequent polling (every 15 seconds instead of 30)
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      loadOrderData(false); // Don't show loading indicator for background refreshes
+    }, 15000); // 15 seconds
+
+    return () => clearInterval(intervalId); // Cleanup on unmount
   }, [token]);
 
   // Optional: Add color coding for status
   const getStatusColor = (status) => {
     switch (status.toLowerCase()) {
-      case 'pending': return 'bg-yellow-500';
+      case 'order placed': return 'bg-yellow-500';
+      case 'packing': return 'bg-orange-500';
       case 'shipped': return 'bg-blue-500';
+      case 'out for delivery': return 'bg-purple-500';
       case 'delivered': return 'bg-green-500';
       default: return 'bg-gray-500';
     }
@@ -46,9 +81,30 @@ const Orders = () => {
 
   return (
     <div className='border-t pt-16'>
-      <div className='text-2xl'>
-        <Title text1={"MY "} text2={"ORDERS"} />
+      <div className='flex justify-between items-center mb-8'>
+        <div className='text-2xl'>
+          <Title text1={"MY "} text2={"ORDERS"} />
+        </div>
+        
+        <div className='flex items-center gap-2'>
+          <button 
+            onClick={() => loadOrderData(true)} 
+            className='bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 flex items-center gap-1'
+            disabled={loading}
+          >
+            {loading ? 'Refreshing...' : 'Refresh Orders'}
+          </button>
+          {lastFetchTime && (
+            <p className='text-xs text-gray-500'>
+              Last updated: {lastFetchTime.toLocaleTimeString()}
+            </p>
+          )}
+        </div>
       </div>
+
+      {loading && orderData.length === 0 && (
+        <p className='text-center text-gray-600 mt-4'>Loading orders...</p>
+      )}
 
       <div className='mt-8 space-y-8'>
         {orderData.length > 0 ? (
@@ -62,12 +118,6 @@ const Orders = () => {
                     <div className={`min-w-2 h-2 rounded-full ${getStatusColor(order.status)}`} />
                     <p className='text-base font-medium text-gray-700'>{order.status}</p>
                   </div>
-                  <button 
-                    onClick={loadOrderData} 
-                    className='border border-gray-300 px-4 py-2 text-sm font-medium rounded-md text-gray-700 hover:bg-gray-100 transition-colors duration-200'
-                  >
-                    Track Order
-                  </button>
                 </div>
 
                 {/* Order Items */}
@@ -114,7 +164,7 @@ const Orders = () => {
             );
           })
         ) : (
-          <p className='text-center text-gray-600'>No orders found.</p>
+          <p className='text-center text-gray-600'>{loading ? 'Loading orders...' : 'No orders found.'}</p>
         )}
       </div>
     </div>
