@@ -42,7 +42,7 @@ const Footer = () => {
                             {companyLinks.map((link, index) => (
                                 <li key={index}>
                                     <Link
-                                        to={link.href} // Replace href with to
+                                        to={link.href}
                                         className="hover:text-gray-800 transition-colors duration-200"
                                     >
                                         {link.text}
