@@ -63,11 +63,9 @@ const Add = ({ token }) => {
 
       // Handle the response
       const data = response.data;
-      console.log(data);
 
       // Handle success (You can display a success message or redirect here)
     } catch (error) {
-      console.log(error);
       toast.error(error.message)
     } 
     finally {

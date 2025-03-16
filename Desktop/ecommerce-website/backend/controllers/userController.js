@@ -86,7 +86,6 @@ const registerUser = async (req, res) => {
         // Sending the response
         res.status(201).json({ success: true, token }); // Changed to status 201 for successful creation
     } catch (error) {
-        console.log(error);
         res.status(500).json({ success: false, message: "Server error: " + error.message }); // Added proper status code
     }
 }
@@ -108,7 +107,6 @@ const adminLogin = async (req, res) => {
     
 }
 catch(error){
-    console.log(error);
     res.json({success:false,message:error.message})
 
 }

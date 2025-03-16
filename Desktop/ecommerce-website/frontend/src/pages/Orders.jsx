@@ -20,7 +20,6 @@ const Orders = () => {
         setLoading(true);
       }
       
-      console.log('Fetching orders at:', new Date().toLocaleTimeString());
       
       const response = await axios.post(
         `${backendUrl}/api/order/userorders`,
@@ -32,7 +31,6 @@ const Orders = () => {
         }
       );
       
-      console.log('Orders received:', response.data.orders.length, 'Server timestamp:', response.data.timestamp);
       
       const sortedOrders = response.data.orders.sort((a, b) => new Date(b.date) - new Date(a.date));
       setOrderData(sortedOrders);

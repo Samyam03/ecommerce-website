@@ -13,7 +13,6 @@ const Login = ({setToken}) => {
   try {
     event.preventDefault();
     const response = await axios.post(backendUrl + '/api/user/admin', { email, password });
-    console.log('Login Response:', response);  // Log the full response
 
     if (response.data.success) {
       setToken(response.data.token);  // Update the parent state with the token
@@ -21,7 +20,6 @@ const Login = ({setToken}) => {
       toast.error(response.data.message);
     }
   } catch (error) {
-    console.log(error);
     toast.error(error.message);
   }
 };

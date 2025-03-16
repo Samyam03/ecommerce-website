@@ -25,7 +25,6 @@ const List = ({token}) => {
     } 
     
     catch (error) {
-      console.log(error);
       toast.error(error.message)
     }
   }
@@ -33,22 +32,19 @@ const List = ({token}) => {
   const removeProduct = async (id) => {
     try {
       const response = await axios.post(backendUrl + '/api/product/remove', { id }, { headers: { token } });
-      console.log('Remove Product Response:', response);
   
       if (response.data.success) {
         toast.success(response.data.message);
         
         // Directly update the list state
         setList(prevList => {
-          const updatedList = prevList.filter(item => item._id !== id); // Remove product by ID
-          console.log("Updated List after Removal:", updatedList);  // Log the updated list
+          const updatedList = prevList.filter(item => item._id !== id);
           return updatedList;
         });
       } else {
         toast.error(response.data.message);
       }
     } catch (error) {
-      console.log('Error removing product:', error);
       toast.error('Error removing product: ' + error.message);
     }
   };

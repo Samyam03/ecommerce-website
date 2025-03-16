@@ -14,7 +14,6 @@ const Orders = ({ token }) => {
     }
 
     try {
-      console.log('Admin: Fetching all orders at:', new Date().toLocaleTimeString());
       
       const response = await axios.post(
         `${backendUrl}/api/order/list`, 
@@ -27,7 +26,6 @@ const Orders = ({ token }) => {
       );
       
       if (response.data.success) {
-        console.log('Admin: Received', response.data.orders.length, 'orders');
         // Sort orders by date, newest first
         const sortedOrders = response.data.orders.sort((a, b) => new Date(b.date) - new Date(a.date));
         setOrders(sortedOrders);

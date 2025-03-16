@@ -32,7 +32,17 @@ const PlaceOrder = () => {
 
   const onChangeHandler = (event) => {
     const name = event.target.name;
-    const value = event.target.value;
+    let value = event.target.value;
+    
+    // Remove non-numeric characters for phone and postal code
+    if (name === 'phone' || name === 'postalCode') {
+      value = value.replace(/[^0-9]/g, '');
+    }
+    // Remove non-letter characters for name fields, city, state, and country
+    else if (['firstName', 'lastName', 'city', 'state', 'country'].includes(name)) {
+      value = value.replace(/[^A-Za-z\s]/g, '');
+    }
+    
     setFormData({ ...formData, [name]: value });
   };
 
@@ -103,7 +113,6 @@ const PlaceOrder = () => {
             const { session_url } = responseStripe.data;
             window.location.replace(session_url); // Redirect to Stripe checkout
           } else {
-            console.log(responseStripe.data.message);
             toast.error(responseStripe.data.message);
           }
           break;
@@ -118,17 +127,70 @@ const PlaceOrder = () => {
     }
   };
 
+  const validateForm = () => {
+    // Name validations
+    const nameRegex = /^[A-Za-z\s]{2,50}$/;
+    if (!nameRegex.test(formData.firstName)) {
+      toast.error('First name should only contain 2-50 letters and spaces');
+      return false;
+    }
+    if (!nameRegex.test(formData.lastName)) {
+      toast.error('Last name should only contain 2-50 letters and spaces');
+      return false;
+    }
+
+    // Email validation
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(formData.email)) {
+      toast.error('Please enter a valid email address');
+      return false;
+    }
+
+    // Street validation
+    if (formData.street.length < 5 || formData.street.length > 100) {
+      toast.error('Street address should be between 5 and 100 characters');
+      return false;
+    }
+
+    // City and State validation
+    const cityStateRegex = /^[A-Za-z\s]{2,50}$/;
+    if (!cityStateRegex.test(formData.city)) {
+      toast.error('City should only contain 2-50 letters and spaces');
+      return false;
+    }
+    if (!cityStateRegex.test(formData.state)) {
+      toast.error('State should only contain 2-50 letters and spaces');
+      return false;
+    }
+
+    // Postal code validation
+    const postalCodeRegex = /^[0-9]{4,10}$/;
+    if (!postalCodeRegex.test(formData.postalCode)) {
+      toast.error('Postal code should be between 4 and 10 digits');
+      return false;
+    }
+
+    // Country validation
+    if (!cityStateRegex.test(formData.country)) {
+      toast.error('Country should only contain 2-50 letters and spaces');
+      return false;
+    }
+
+    // Phone validation
+    const phoneRegex = /^[0-9]{10,15}$/;
+    if (!phoneRegex.test(formData.phone)) {
+      toast.error('Phone number should be between 10 and 15 digits');
+      return false;
+    }
+
+    return true;
+  };
+
   const handlePlaceOrder = (e) => {
     e.preventDefault(); // Prevent form submission
 
-    // Check if all required fields are filled
-    const requiredFields = ['firstName', 'lastName', 'email', 'street', 'city', 'state', 'postalCode', 'country', 'phone'];
-    const isFormValid = requiredFields.every(field => formData[field].trim() !== '');
-
-    if (isFormValid) {
+    if (validateForm()) {
       onSubmitHandler(e); // Call onSubmitHandler to process the order
-    } else {
-      toast.error('Please fill out all required fields before placing your order.'); // Show error message
     }
   };
 
@@ -141,20 +203,121 @@ const PlaceOrder = () => {
         </div>
 
         <div className='flex gap-4'>
-          <input required onChange={onChangeHandler} name='firstName' value={formData.firstName} className='border border-gray-300 rounded-lg py-2 px-4 w-full focus:outline-none focus:border-black' type="text" placeholder='First Name' />
-          <input required onChange={onChangeHandler} name='lastName' value={formData.lastName} className='border border-gray-300 rounded-lg py-2 px-4 w-full focus:outline-none focus:border-black' type="text" placeholder='Last Name' />
+          <input 
+            required 
+            onChange={onChangeHandler} 
+            name='firstName' 
+            value={formData.firstName} 
+            className='border border-gray-300 rounded-lg py-2 px-4 w-full focus:outline-none focus:border-black' 
+            type="text" 
+            placeholder='First Name'
+            pattern="[A-Za-z\s]+"
+            minLength="2"
+            maxLength="50"
+            title="First name should only contain letters and spaces"
+          />
+          <input 
+            required 
+            onChange={onChangeHandler} 
+            name='lastName' 
+            value={formData.lastName} 
+            className='border border-gray-300 rounded-lg py-2 px-4 w-full focus:outline-none focus:border-black' 
+            type="text" 
+            placeholder='Last Name'
+            pattern="[A-Za-z\s]+"
+            minLength="2"
+            maxLength="50"
+            title="Last name should only contain letters and spaces"
+          />
         </div>
-        <input required onChange={onChangeHandler} name='email' value={formData.email} className='border border-gray-300 rounded-lg py-2 px-4 w-full focus:outline-none focus:border-black' type="email" placeholder='Email Address' />
-        <input required onChange={onChangeHandler} name='street' value={formData.street} className='border border-gray-300 rounded-lg py-2 px-4 w-full focus:outline-none focus:border-black' type="text" placeholder='Street' />
+        <input 
+          required 
+          onChange={onChangeHandler} 
+          name='email' 
+          value={formData.email} 
+          className='border border-gray-300 rounded-lg py-2 px-4 w-full focus:outline-none focus:border-black' 
+          type="email" 
+          placeholder='Email Address'
+          pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+          title="Please enter a valid email address"
+        />
+        <input 
+          required 
+          onChange={onChangeHandler} 
+          name='street' 
+          value={formData.street} 
+          className='border border-gray-300 rounded-lg py-2 px-4 w-full focus:outline-none focus:border-black' 
+          type="text" 
+          placeholder='Street'
+          minLength="5"
+          maxLength="100"
+          title="Street address should be between 5 and 100 characters"
+        />
         <div className='flex gap-4'>
-          <input required onChange={onChangeHandler} name='city' value={formData.city} className='border border-gray-300 rounded-lg py-2 px-4 w-full focus:outline-none focus:border-black' type="text" placeholder='City' />
-          <input required onChange={onChangeHandler} name='state' value={formData.state} className='border border-gray-300 rounded-lg py-2 px-4 w-full focus:outline-none focus:border-black' type="text" placeholder='State' />
+          <input 
+            required 
+            onChange={onChangeHandler} 
+            name='city' 
+            value={formData.city} 
+            className='border border-gray-300 rounded-lg py-2 px-4 w-full focus:outline-none focus:border-black' 
+            type="text" 
+            placeholder='City'
+            pattern="[A-Za-z\s]+"
+            minLength="2"
+            maxLength="50"
+            title="City should only contain letters and spaces"
+          />
+          <input 
+            required 
+            onChange={onChangeHandler} 
+            name='state' 
+            value={formData.state} 
+            className='border border-gray-300 rounded-lg py-2 px-4 w-full focus:outline-none focus:border-black' 
+            type="text" 
+            placeholder='State'
+            pattern="[A-Za-z\s]+"
+            minLength="2"
+            maxLength="50"
+            title="State should only contain letters and spaces"
+          />
         </div>
         <div className='flex gap-4'>
-          <input required onChange={onChangeHandler} name='postalCode' value={formData.postalCode} className='border border-gray-300 rounded-lg py-2 px-4 w-full focus:outline-none focus:border-black' type="number" placeholder='Postal Code' />
-          <input required onChange={onChangeHandler} name='country' value={formData.country} className='border border-gray-300 rounded-lg py-2 px-4 w-full focus:outline-none focus:border-black' type="text" placeholder='Country' />
+          <input 
+            required 
+            onChange={onChangeHandler} 
+            name='postalCode' 
+            value={formData.postalCode} 
+            className='border border-gray-300 rounded-lg py-2 px-4 w-full focus:outline-none focus:border-black' 
+            type="text" 
+            placeholder='Postal Code'
+            pattern="[0-9]{4,10}"
+            title="Postal code should be between 4 and 10 digits"
+          />
+          <input 
+            required 
+            onChange={onChangeHandler} 
+            name='country' 
+            value={formData.country} 
+            className='border border-gray-300 rounded-lg py-2 px-4 w-full focus:outline-none focus:border-black' 
+            type="text" 
+            placeholder='Country'
+            pattern="[A-Za-z\s]+"
+            minLength="2"
+            maxLength="50"
+            title="Country should only contain letters and spaces"
+          />
         </div>
-        <input required onChange={onChangeHandler} name='phone' value={formData.phone} className='border border-gray-300 rounded-lg py-2 px-4 w-full focus:outline-none focus:border-black' type="number" placeholder='Phone' />
+        <input 
+          required 
+          onChange={onChangeHandler} 
+          name='phone' 
+          value={formData.phone} 
+          className='border border-gray-300 rounded-lg py-2 px-4 w-full focus:outline-none focus:border-black' 
+          type="tel" 
+          placeholder='Phone'
+          pattern="[0-9]{10,15}"
+          title="Phone number should be between 10 and 15 digits"
+        />
       </div>
 
       {/* Right Side */}

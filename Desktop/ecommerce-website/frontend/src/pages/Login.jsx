@@ -18,9 +18,15 @@ const Login = () => {
       if (currentState === 'Sign Up') {
         const response = await axios.post(backendUrl + '/api/user/register', { name, email, password });
         if (response.data.success) {
-          setToken(response.data.token);
-          localStorage.setItem('token', response.data.token);
-          toast.success('Account created successfully');
+          toast.success('Account created successfully! Please login.');
+          setName('');
+          setEmail('');
+          setPassword('');
+          setCurrentState('Login');
+          navigate('/temp', { replace: true });
+          setTimeout(() => {
+            navigate('/login', { replace: true });
+          }, 0);
         } else {
           toast.error(response.data.message);
         }
@@ -29,7 +35,7 @@ const Login = () => {
         const response = await axios.post(backendUrl + '/api/user/login', { email, password });
         if (response.data.success) {
           setToken(response.data.token);
-          setUserId(response.data.user._id); // Update userId in context
+          setUserId(response.data.user._id);
           localStorage.setItem('token', response.data.token);
           localStorage.setItem('userId', response.data.user._id);
           toast.success('Logged in successfully');
@@ -38,7 +44,6 @@ const Login = () => {
         }
       }
     } catch (error) {
-      console.log(error);
       toast.error("The user with the provided email does not exist");
     }
   };
