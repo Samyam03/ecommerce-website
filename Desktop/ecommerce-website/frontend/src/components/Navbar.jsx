@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 
 const Navbar = () => {
   const [visible, setVisible] = useState(false);
+  const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const { setShowSearch, getCartCount, navigate, token, setToken, setCartItems, setUserId, userId } = useContext(ShopContext);
 
   const logout = () => {
@@ -16,6 +17,7 @@ const Navbar = () => {
     setUserId('');
     setToken('');
     setCartItems({});
+    setShowProfileDropdown(false);
   };
 
   // Get the current location/path
@@ -23,6 +25,21 @@ const Navbar = () => {
 
   // Check if the current path is the collection page
   const isCollectionPage = location.pathname.includes('collection');
+
+  // Close dropdown when clicking outside
+  const handleClickOutside = (e) => {
+    if (!e.target.closest('.profile-dropdown')) {
+      setShowProfileDropdown(false);
+    }
+  };
+
+  // Add click outside listener
+  React.useEffect(() => {
+    document.addEventListener('click', handleClickOutside);
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, []);
 
   return (
     <>
@@ -78,19 +95,33 @@ const Navbar = () => {
           )}
 
           {/* Profile Dropdown */}
-          <div className='group relative'>
+          <div className='profile-dropdown group relative'>
             <img 
-              onClick={() => (token&&userId) ? null : navigate('/login')} 
+              onClick={(e) => {
+                e.stopPropagation();
+                if (token && userId) {
+                  setShowProfileDropdown(!showProfileDropdown);
+                } else {
+                  navigate('/login');
+                }
+              }}
               src={assets.profile_icon} 
               className='w-6 cursor-pointer transition-all hover:opacity-80 filter invert' 
               alt="Profile Icon" 
             />
             {/* Dropdown */}
-            {(token&&userId) && (
-              <div className='group-hover:block hidden absolute right-0 pt-4'>
+            {(token && userId) && (
+              <div 
+                className={`absolute right-0 pt-4 ${showProfileDropdown ? 'block' : 'hidden md:group-hover:block'}`}
+                onMouseEnter={() => setShowProfileDropdown(true)}
+                onMouseLeave={() => setShowProfileDropdown(false)}
+              >
                 <div className='flex flex-col gap-2 w-36 py-4 px-6 bg-white shadow-lg rounded-lg text-gray-600'>
                   <p className='cursor-pointer hover:text-black'>My Profile</p>
-                  <p onClick={() => navigate('/orders')} className='cursor-pointer hover:text-black'>Orders</p>
+                  <p onClick={() => {
+                    navigate('/orders');
+                    setShowProfileDropdown(false);
+                  }} className='cursor-pointer hover:text-black'>Orders</p>
                   <p onClick={logout} className='cursor-pointer hover:text-black'>Logout</p>
                 </div>
               </div>

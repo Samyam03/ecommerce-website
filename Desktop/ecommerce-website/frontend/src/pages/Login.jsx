@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 
 const Login = () => {
   const [currentState, setCurrentState] = useState('Login');
-  const { token, setToken, navigate, backendUrl } = useContext(ShopContext);
+  const { token, setToken, navigate, backendUrl, setUserId } = useContext(ShopContext);
 
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
@@ -29,9 +29,9 @@ const Login = () => {
         const response = await axios.post(backendUrl + '/api/user/login', { email, password });
         if (response.data.success) {
           setToken(response.data.token);
+          setUserId(response.data.user._id); // Update userId in context
           localStorage.setItem('token', response.data.token);
-          localStorage.setItem('userId', response.data.user._id); // Store userId
-          console.log('Storing userId:', response.data.user._id); // Debugging
+          localStorage.setItem('userId', response.data.user._id);
           toast.success('Logged in successfully');
         } else {
           toast.error("You have entered an invalid email or password");
