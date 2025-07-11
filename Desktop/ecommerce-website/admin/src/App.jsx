@@ -21,15 +21,15 @@ const App = () => {
   }, [token]);
 
   return (
-    <div className='bg-gray-50 min-h-screen'>
+    <div className='bg-gray-50 min-h-screen flex flex-col'>
       <ToastContainer />
       {token === "" ? <Login setToken={setToken} /> :
         <>
           <Navbar setToken={setToken} />
           <hr />
-          <div className="flex w-full">
+          <div className="flex flex-row w-full flex-1 min-h-0">
             <Sidebar />
-            <div className='w-[70%] mx-auto ml-[max(5vw,25px)] my-8 text-gray-600 text-base'>
+            <div className='flex-1 ml-64 mt-16 text-gray-600 text-base'>
               <Routes>
                 <Route path='/add' element={<Add token={token} />} />
                 <Route path='/list' element={<List token={token} />} />

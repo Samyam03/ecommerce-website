@@ -38,132 +38,316 @@ const Navbar = () => {
 
   return (
     <>
-      {/* Navbar */}
-      <div className="flex items-center justify-between py-3 px-14 font-semibold bg-[#C0C0C0] fixed w-full top-0 left-0 z-20 shadow-sm text-black text-sm">
-        {/* Logo */}
-        <Link to='/'>
-          <img src={assets.logo} className='w-12 cursor-pointer' alt="Logo" />
-        </Link>
+      {/* Modern Navbar */}
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            {/* Logo */}
+            <Link to='/' className="flex items-center space-x-2 group">
+              <img 
+                src={assets.logo} 
+                className='h-10 w-auto transition-transform duration-200 group-hover:scale-105' 
+                alt="Logo" 
+              />
+              <span className="hidden sm:block text-xl font-bold text-gray-800 tracking-tight">
+                SHOPSPHERE
+              </span>
+            </Link>
 
-        {/* Navigation Links */}
-        <ul className='hidden md:flex flex-1 justify-center gap-20 uppercase'>
-          <NavLink
-            to='/'
-            className={({ isActive }) => isActive ? 'border-b-2 border-gray-800' : 'hover:text-gray-600'}
-          >
-            Home
-          </NavLink>
-          <NavLink
-            to='/collection'
-            className={({ isActive }) => isActive ? 'border-b-2 border-gray-800' : 'hover:text-gray-600'}
-          >
-            Collection
-          </NavLink>
-          <NavLink
-            to='/about'
-            className={({ isActive }) => isActive ? 'border-b-2 border-gray-800' : 'hover:text-gray-600'}
-          >
-            About
-          </NavLink>
-          <NavLink
-            to='/contact'
-            className={({ isActive }) => isActive ? 'border-b-2 border-gray-800' : 'hover:text-gray-600'}
-          >
-            Contact
-          </NavLink>
-        </ul>
-
-        {/* Action Icons */}
-        <div className='flex items-center gap-14'>
-          {isCollectionPage && (
-            <img
-              onClick={() => setShowSearch(true)}
-              src={assets.search_icon}
-              className='w-6 cursor-pointer hover:scale-110 transition-transform'
-              alt="Search Icon"
-            />
-          )}
-
-          {/* Profile Dropdown */}
-          <div className='relative profile-dropdown'>
-            <img
-              onClick={(e) => {
-                e.stopPropagation();
-                if (token && userId) {
-                  setShowProfileDropdown(!showProfileDropdown);
-                } else {
-                  navigate('/login');
+            {/* Desktop Navigation Links */}
+            <div className='hidden md:flex items-center space-x-8'>
+              <NavLink
+                to='/'
+                className={({ isActive }) => 
+                  `relative px-3 py-2 text-sm font-medium transition-all duration-200 ${
+                    isActive 
+                      ? 'text-gray-900' 
+                      : 'text-gray-600 hover:text-gray-900'
+                  }`
                 }
-              }}
-              src={assets.profile_icon}
-              className='w-6 cursor-pointer hover:opacity-80'
-              alt="Profile Icon"
-            />
-            {(token && userId) && showProfileDropdown && (
-              <div
-                className="absolute right-0 mt-3 w-44 bg-white shadow-lg rounded-md py-3 text-gray-700 z-30"
-                onMouseLeave={() => setShowProfileDropdown(false)}
               >
-                <p className='px-6 py-2 hover:bg-gray-100 cursor-pointer'>My Profile</p>
-                <p
+                {({ isActive }) => (
+                  <>
+                    HOME
+                    {isActive && (
+                      <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-gray-800 to-gray-600 rounded-full"></div>
+                    )}
+                  </>
+                )}
+              </NavLink>
+              
+              <NavLink
+                to='/collection'
+                className={({ isActive }) => 
+                  `relative px-3 py-2 text-sm font-medium transition-all duration-200 ${
+                    isActive 
+                      ? 'text-gray-900' 
+                      : 'text-gray-600 hover:text-gray-900'
+                  }`
+                }
+              >
+                {({ isActive }) => (
+                  <>
+                    COLLECTION
+                    {isActive && (
+                      <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-gray-800 to-gray-600 rounded-full"></div>
+                    )}
+                  </>
+                )}
+              </NavLink>
+              
+              <NavLink
+                to='/about'
+                className={({ isActive }) => 
+                  `relative px-3 py-2 text-sm font-medium transition-all duration-200 ${
+                    isActive 
+                      ? 'text-gray-900' 
+                      : 'text-gray-600 hover:text-gray-900'
+                  }`
+                }
+              >
+                {({ isActive }) => (
+                  <>
+                    ABOUT
+                    {isActive && (
+                      <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-gray-800 to-gray-600 rounded-full"></div>
+                    )}
+                  </>
+                )}
+              </NavLink>
+              
+              <NavLink
+                to='/contact'
+                className={({ isActive }) => 
+                  `relative px-3 py-2 text-sm font-medium transition-all duration-200 ${
+                    isActive 
+                      ? 'text-gray-900' 
+                      : 'text-gray-600 hover:text-gray-900'
+                  }`
+                }
+              >
+                {({ isActive }) => (
+                  <>
+                    CONTACT
+                    {isActive && (
+                      <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-gray-800 to-gray-600 rounded-full"></div>
+                    )}
+                  </>
+                )}
+              </NavLink>
+            </div>
+
+            {/* Action Icons */}
+            <div className='flex items-center space-x-4'>
+              {/* Search Icon */}
+              {isCollectionPage && (
+                <button
+                  onClick={() => setShowSearch(true)}
+                  className="p-2 rounded-full hover:bg-gray-100 transition-colors duration-200 group"
+                  aria-label="Search"
+                >
+                  <img
+                    src={assets.search_icon}
+                    className='w-5 h-5 transition-transform duration-200 group-hover:scale-110'
+                    alt="Search"
+                  />
+                </button>
+              )}
+
+              {/* Profile Dropdown */}
+              <div className='relative profile-dropdown'>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (token && userId) {
+                      setShowProfileDropdown(!showProfileDropdown);
+                    } else {
+                      navigate('/login');
+                    }
+                  }}
+                  className="p-2 rounded-full hover:bg-gray-100 transition-colors duration-200 group"
+                  aria-label="Profile"
+                >
+                  <img
+                    src={assets.profile_icon}
+                    className='w-5 h-5 transition-transform duration-200 group-hover:scale-110'
+                    alt="Profile"
+                  />
+                </button>
+                
+                {(token && userId) && showProfileDropdown && (
+                                     <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-100 py-2 animate-in slide-in-from-top-2 duration-200">
+                     <button
+                       onClick={() => {
+                         navigate('/orders');
+                         setShowProfileDropdown(false);
+                       }}
+                       className='w-full text-left px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors duration-150'
+                     >
+                       My Orders
+                     </button>
+                     <div className="border-t border-gray-100 mt-1 pt-1">
+                       <button
+                         onClick={logout}
+                         className='w-full text-left px-4 py-3 text-sm text-red-600 hover:bg-red-50 transition-colors duration-150'
+                       >
+                         Logout
+                       </button>
+                     </div>
+                   </div>
+                )}
+              </div>
+
+              {/* Cart Icon */}
+              <Link to='/cart' className='relative group'>
+                <button className="p-2 rounded-full hover:bg-gray-100 transition-colors duration-200">
+                  <img 
+                    src={assets.cart_icon} 
+                    className='w-5 h-5 transition-transform duration-200 group-hover:scale-110' 
+                    alt="Cart" 
+                  />
+                  {getCartCount() > 0 && (
+                    <span className='absolute -top-1 -right-1 bg-gradient-to-r from-gray-800 to-gray-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-medium animate-pulse'>
+                      {getCartCount()}
+                    </span>
+                  )}
+                </button>
+              </Link>
+
+              {/* Mobile Menu Button */}
+              <button
+                onClick={() => setVisible(true)}
+                className='md:hidden p-2 rounded-full hover:bg-gray-100 transition-colors duration-200'
+                aria-label="Menu"
+              >
+                <img
+                  src={assets.menu_icon}
+                  className='w-5 h-5'
+                  alt="Menu"
+                />
+              </button>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      {/* Modern Mobile Sidebar */}
+      <div className={`fixed inset-y-0 right-0 z-50 w-80 bg-white shadow-2xl transform transition-transform duration-300 ease-in-out ${visible ? 'translate-x-0' : 'translate-x-full'}`}>
+        <div className='flex flex-col h-full'>
+          {/* Mobile Sidebar Header */}
+          <div className='flex items-center justify-between p-6 border-b border-gray-100'>
+            <h2 className='text-lg font-semibold text-gray-900'>Menu</h2>
+            <button
+              onClick={() => setVisible(false)}
+              className='p-2 rounded-full hover:bg-gray-100 transition-colors duration-200'
+              aria-label="Close menu"
+            >
+              <img className='h-5 w-5 rotate-180' src={assets.dropdown_icon} alt="Close" />
+            </button>
+          </div>
+          
+          {/* Mobile Navigation Links */}
+          <nav className='flex-1 px-6 py-4 space-y-2'>
+            <NavLink 
+              onClick={() => setVisible(false)} 
+              className={({ isActive }) => 
+                `block px-4 py-3 rounded-lg text-base font-medium transition-all duration-200 ${
+                  isActive 
+                    ? 'bg-gray-100 text-gray-900' 
+                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                }`
+              }
+              to='/'
+            >
+              Home
+            </NavLink>
+            <NavLink 
+              onClick={() => setVisible(false)} 
+              className={({ isActive }) => 
+                `block px-4 py-3 rounded-lg text-base font-medium transition-all duration-200 ${
+                  isActive 
+                    ? 'bg-gray-100 text-gray-900' 
+                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                }`
+              }
+              to='/collection'
+            >
+              Collection
+            </NavLink>
+            <NavLink 
+              onClick={() => setVisible(false)} 
+              className={({ isActive }) => 
+                `block px-4 py-3 rounded-lg text-base font-medium transition-all duration-200 ${
+                  isActive 
+                    ? 'bg-gray-100 text-gray-900' 
+                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                }`
+              }
+              to='/about'
+            >
+              About
+            </NavLink>
+            <NavLink 
+              onClick={() => setVisible(false)} 
+              className={({ isActive }) => 
+                `block px-4 py-3 rounded-lg text-base font-medium transition-all duration-200 ${
+                  isActive 
+                    ? 'bg-gray-100 text-gray-900' 
+                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                }`
+              }
+              to='/contact'
+            >
+              Contact
+            </NavLink>
+          </nav>
+
+          {/* Mobile Sidebar Footer */}
+          <div className='p-6 border-t border-gray-100'>
+            {token && userId ? (
+              <div className='space-y-2'>
+                <button
                   onClick={() => {
                     navigate('/orders');
-                    setShowProfileDropdown(false);
+                    setVisible(false);
                   }}
-                  className='px-6 py-2 hover:bg-gray-100 cursor-pointer'
+                  className='w-full text-left px-4 py-3 rounded-lg text-base text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-all duration-200'
                 >
-                  Orders
-                </p>
-                <p
-                  onClick={logout}
-                  className='px-6 py-2 hover:bg-gray-100 cursor-pointer'
+                  My Orders
+                </button>
+                <button
+                  onClick={() => {
+                    logout();
+                    setVisible(false);
+                  }}
+                  className='w-full text-left px-4 py-3 rounded-lg text-base text-red-600 hover:bg-red-50 transition-all duration-200'
                 >
                   Logout
-                </p>
+                </button>
               </div>
+            ) : (
+              <button
+                onClick={() => {
+                  navigate('/login');
+                  setVisible(false);
+                }}
+                className='w-full px-4 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors duration-200 font-medium'
+              >
+                Sign In
+              </button>
             )}
           </div>
-
-          {/* Cart Icon */}
-          <Link to='/cart' className='relative'>
-            <img src={assets.cart_icon} className='w-6 cursor-pointer hover:scale-110 transition-transform' alt="Cart Icon" />
-            <p className='absolute -right-2 -bottom-2 w-6 h-6 text-center text-xs font-bold bg-gray-900 text-white rounded-full'>
-              {getCartCount()}
-            </p>
-          </Link>
-
-          {/* Mobile Menu Icon */}
-          <img
-            onClick={() => setVisible(true)}
-            src={assets.menu_icon}
-            className='w-6 cursor-pointer md:hidden'
-            alt="Menu Icon"
-          />
         </div>
       </div>
 
-      {/* Mobile Sidebar */}
-      <div className={`fixed top-0 right-0 h-full bg-white shadow-lg z-30 transition-all duration-300 ease-in-out ${visible ? 'w-64' : 'w-0 overflow-hidden'}`}>
-        <div className='flex flex-col h-full text-gray-800'>
-          <div onClick={() => setVisible(false)} className='flex items-center gap-4 p-4 border-b border-gray-200 cursor-pointer'>
-            <img className='h-5 rotate-180' src={assets.dropdown_icon} alt="Back Icon" />
-            <p className='text-sm'>Back</p>
-          </div>
-          <NavLink onClick={() => setVisible(false)} className='py-4 pl-6 border-b border-gray-100 hover:bg-gray-50 text-sm' to='/'>Home</NavLink>
-          <NavLink onClick={() => setVisible(false)} className='py-4 pl-6 border-b border-gray-100 hover:bg-gray-50 text-sm' to='/collection'>Collection</NavLink>
-          <NavLink onClick={() => setVisible(false)} className='py-4 pl-6 border-b border-gray-100 hover:bg-gray-50 text-sm' to='/about'>About</NavLink>
-          <NavLink onClick={() => setVisible(false)} className='py-4 pl-6 border-b border-gray-100 hover:bg-gray-50 text-sm' to='/contact'>Contact</NavLink>
-        </div>
-      </div>
-
-      {/* Backdrop */}
+      {/* Modern Backdrop */}
       <div
-        className={`fixed inset-0 bg-black opacity-30 z-20 ${visible ? 'block' : 'hidden'}`}
+        className={`fixed inset-0 bg-black/20 backdrop-blur-sm z-40 transition-opacity duration-300 ${visible ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
         onClick={() => setVisible(false)}
       ></div>
 
-      {/* Page Offset Below Navbar */}
-      <div className="mt-20"></div>
+      {/* Spacer for fixed navbar */}
+      <div className="h-16"></div>
     </>
   );
 };
