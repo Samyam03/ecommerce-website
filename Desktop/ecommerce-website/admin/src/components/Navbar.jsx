@@ -1,14 +1,24 @@
 import React from 'react'
 import {assets} from "../assets/assets"
 
-const Navbar = ({setToken}) => {
+const Navbar = ({setToken, onSidebarToggle}) => {
   return (
     <nav className='fixed top-0 left-0 w-full h-16 bg-white border-b border-gray-200/50 shadow-sm z-50 flex items-center'>
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full'>
         <div className='flex items-center justify-between h-16'>
           
-          {/* Logo Section */}
+          {/* Logo Section + Hamburger */}
           <div className='flex items-center gap-3'>
+            {/* Hamburger for mobile */}
+            <button
+              className="block md:hidden p-2 mr-2 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-300"
+              onClick={onSidebarToggle}
+              aria-label="Open sidebar"
+            >
+              <svg className="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
             <img className='h-8 w-auto' src={assets.logo} alt="Admin Panel" />
             <div className='hidden sm:block'>
               <div className='flex items-center gap-2'>

@@ -190,7 +190,7 @@ const Cart = () => {
                 <div className="mt-8">
                   <button 
                     onClick={() => navigate('/place-order')} 
-                    className="w-full bg-gray-900 text-white text-lg font-medium py-4 rounded-xl hover:bg-gray-800 transition-all duration-300 transform hover:scale-[1.02] group"
+                    className="w-full bg-gray-900 text-white text-base sm:text-lg font-bold py-4 sm:py-5 rounded-2xl shadow-lg mt-2 mb-1 hover:bg-gray-800 transition-all duration-300 transform hover:scale-105 group focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
                   >
                     <span className="flex items-center justify-center gap-2">
                       PROCEED TO CHECKOUT

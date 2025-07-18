@@ -199,52 +199,52 @@ const Orders = () => {
                   </div>
 
                   {/* Order Items */}
-                  <div className='mt-6 space-y-4'>
+                  <div className='mt-8 space-y-6'>
                     {order.items.map((item, itemIndex) => (
-                      <div key={itemIndex} className='flex items-center gap-6 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors duration-200'>
-                        <div className='w-20 h-20 flex-shrink-0'>
-                          {item.image?.length > 0 ? (
-                            <img 
-                              className='w-full h-full object-cover rounded-lg shadow-sm' 
-                              src={item.image[0]} 
-                              alt={item.name}
-                            />
-                          ) : (
-                            <div className='w-full h-full bg-gray-200 rounded-lg flex items-center justify-center'>
-                              <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                              </svg>
+                      <div
+                        key={itemIndex}
+                        className='flex flex-col sm:flex-row sm:items-center gap-6 p-6 bg-gray-50 rounded-2xl shadow border border-gray-100 hover:bg-gray-100 transition-colors duration-200'
+                      >
+                        <div className='flex items-center gap-6 flex-1 min-w-0'>
+                          <div className='w-20 h-20 flex-shrink-0'>
+                            {item.image?.length > 0 ? (
+                              <img
+                                className='w-full h-full object-cover rounded-xl shadow'
+                                src={item.image[0]}
+                                alt={item.name}
+                              />
+                            ) : (
+                              <div className='w-full h-full bg-gray-200 rounded-xl flex items-center justify-center'>
+                                <svg className="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                              </div>
+                            )}
+                          </div>
+                          <div className='flex-1 min-w-0'>
+                            <h3 className='text-lg sm:text-xl font-bold text-gray-900 mb-1 truncate'>
+                              {item.name || 'Product name unavailable'}
+                            </h3>
+                            <div className='flex flex-wrap items-center gap-4 text-base text-gray-700 font-medium mb-1'>
+                              <div className="flex items-center gap-1">
+                                <span>Qty:</span>
+                                <span className='font-semibold'>{item.quantity}</span>
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <span>Size:</span>
+                                <span className='font-semibold'>{item.size || 'N/A'}</span>
+                              </div>
                             </div>
-                          )}
-                        </div>
-                        
-                        <div className='flex-1'>
-                          <h3 className='text-lg font-semibold text-gray-900 mb-2'>
-                            {item.name || 'Product name unavailable'}
-                          </h3>
-                          <div className='flex flex-wrap items-center gap-4 text-sm text-gray-600'>
-                            <div className="flex items-center gap-1">
-                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.99 1.99 0 013 12V7a4 4 0 014-4z" />
-                              </svg>
-                              <span>Qty: {item.quantity}</span>
-                            </div>
-                            <div className="flex items-center gap-1">
-                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4a1 1 0 011-1h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V20a1 1 0 01-1 1H5a1 1 0 01-1-1v-4" />
-                              </svg>
-                              <span>Size: {item.size || 'N/A'}</span>
+                            <div className='text-sm text-gray-500'>
+                              {currency}{parseFloat(item.price).toFixed(2)} each
                             </div>
                           </div>
                         </div>
-                        
-                        <div className="text-right">
-                          <p className='text-lg font-semibold text-gray-900'>
+                        <div className="text-right min-w-[90px]">
+                          <p className='text-xl sm:text-2xl font-extrabold text-gray-900'>
                             {currency}{(parseFloat(item.price) * item.quantity).toFixed(2)}
                           </p>
-                          <p className='text-sm text-gray-500'>
-                            {currency}{parseFloat(item.price).toFixed(2)} each
-                          </p>
+                          <p className='text-xs text-gray-500'>Total</p>
                         </div>
                       </div>
                     ))}

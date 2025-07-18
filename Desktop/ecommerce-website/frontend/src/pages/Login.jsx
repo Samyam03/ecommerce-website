@@ -149,9 +149,6 @@ const Login = () => {
 
             {/* Links Section */}
             <div className="flex justify-between items-center text-sm">
-              <button type="button" className="text-gray-600 hover:text-gray-900 transition-colors font-medium">
-                Forgot Password?
-              </button>
               {currentState === "Login" ? (
                 <button
                   type="button"

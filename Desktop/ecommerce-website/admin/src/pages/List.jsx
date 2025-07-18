@@ -224,11 +224,11 @@ const List = ({ token }) => {
               {/* Table Body */}
               <div className="divide-y divide-gray-200/50">
                 {filteredProducts.map((item, index) => (
-                  <div key={item._id} className="grid grid-cols-1 md:grid-cols-[80px_1fr_120px_120px_100px] items-center gap-4 py-4 px-6 hover:bg-gray-50/50 transition-colors duration-300">
-                    
-                    {/* Product Image */}
-                    <div className="flex justify-center md:justify-start">
-                      <div className="w-16 h-16 bg-gray-100 rounded-xl overflow-hidden border border-gray-200/50">
+                  <React.Fragment key={item._id}>
+                    {/* Mobile Card */}
+                    <div className="flex md:hidden items-center gap-3 py-4 px-4 border-b border-gray-100 last:border-b-0 bg-white rounded-lg shadow-sm mb-3">
+                      {/* Image */}
+                      <div className="w-16 h-16 flex-shrink-0 bg-gray-100 rounded-xl overflow-hidden border border-gray-200/50">
                         <img 
                           className="w-full h-full object-cover" 
                           src={item.image[0]} 
@@ -238,65 +238,114 @@ const List = ({ token }) => {
                           }}
                         />
                       </div>
-                    </div>
-
-                    {/* Product Details */}
-                    <div className="min-w-0">
-                      <h3 className="font-semibold text-gray-900 truncate">{item.name}</h3>
-                      <p className="text-sm text-gray-600 mt-1">
-                        {item.subCategory || 'General'}
-                      </p>
-                      {item.bestseller && (
-                        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 mt-2">
-                          <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                          </svg>
-                          Bestseller
-                        </span>
-                      )}
-                    </div>
-
-                    {/* Category */}
-                    <div className="flex justify-start md:justify-center">
-                      <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800">
-                        {item.category}
-                      </span>
-                    </div>
-
-                    {/* Price */}
-                    <div className="flex justify-start md:justify-center">
-                      <span className="text-lg font-bold text-gray-900">
-                        {currency}{item.price}
-                      </span>
-                    </div>
-
-                    {/* Actions */}
-                    <div className="flex justify-start md:justify-center">
-                      <button
-                        onClick={() => removeProduct(item._id)}
-                        disabled={isRemoving === item._id}
-                        className={`p-2 rounded-lg transition-all duration-300 ${
-                          isRemoving === item._id
-                            ? 'bg-gray-100 cursor-not-allowed'
-                            : 'bg-red-50 hover:bg-red-100 text-red-600 hover:text-red-700'
-                        }`}
-                        title="Remove product"
-                      >
-                        {isRemoving === item._id ? (
-                          <svg className="animate-spin w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                          </svg>
-                        ) : (
-                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                          </svg>
+                      {/* Details */}
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-semibold text-gray-900 text-base truncate">{item.name}</h3>
+                        <p className="text-xs text-gray-600 mt-1 truncate">{item.subCategory || 'General'}</p>
+                        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 mt-1">{item.category}</span>
+                        {item.bestseller && (
+                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 ml-2 mt-1">
+                            <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                            </svg>
+                            Bestseller
+                          </span>
                         )}
-                      </button>
+                        <div className="flex items-center justify-between mt-2">
+                          <span className="text-base font-bold text-gray-900">{currency}{item.price}</span>
+                          <button
+                            onClick={() => removeProduct(item._id)}
+                            disabled={isRemoving === item._id}
+                            className={`ml-2 p-2 rounded-lg transition-all duration-300 ${
+                              isRemoving === item._id
+                                ? 'bg-gray-100 cursor-not-allowed'
+                                : 'bg-red-50 hover:bg-red-100 text-red-600 hover:text-red-700'
+                            }`}
+                            title="Remove product"
+                          >
+                            {isRemoving === item._id ? (
+                              <svg className="animate-spin w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                              </svg>
+                            ) : (
+                              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                              </svg>
+                            )}
+                          </button>
+                        </div>
+                      </div>
                     </div>
-        </div>
-       ))}
-      </div>
-    </>
+                    {/* Desktop Row (unchanged) */}
+                    <div className="hidden md:grid grid-cols-[80px_1fr_120px_120px_100px] items-center gap-4 py-4 px-6 hover:bg-gray-50/50 transition-colors duration-300">
+                      {/* Product Image */}
+                      <div className="flex justify-center md:justify-start">
+                        <div className="w-16 h-16 bg-gray-100 rounded-xl overflow-hidden border border-gray-200/50">
+                          <img 
+                            className="w-full h-full object-cover" 
+                            src={item.image[0]} 
+                            alt={item.name}
+                            onError={(e) => {
+                              e.target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0yMS4zMzMzIDI2LjY2NjdDMjMuNTQyNSAyNi42NjY3IDI1LjMzMzMgMjQuODc1OCAyNS4zMzMzIDIyLjY2NjdDMjUuMzMzMyAyMC40NTc1IDIzLjU0MjUgMTguNjY2NyAyMS4zMzMzIDE4LjY2NjdDMTkuMTI0MiAxOC42NjY3IDE3LjMzMzMgMjAuNDU3NSAxNy4zMzMzIDIyLjY2NjdDMTcuMzMzMyAyNC44NzU4IDE5LjEyNDIgMjYuNjY2NyAyMS4zMzMzIDI2LjY2NjdaIiBmaWxsPSIjOUM5Qzk4Ii8+CjxwYXRoIGQ9Ik0xNiA0MC4wMDAxTDI2LjY2NjcgMjkuMzMzNEwzNy4zMzMzIDQwLjAwMDFINDhWMTZIMTZWNDAuMDAwMVoiIGZpbGw9IiM5QzlDOTgiLz4KPC9zdmc+Cg=='
+                            }}
+                          />
+                        </div>
+                      </div>
+                      {/* Product Details */}
+                      <div className="min-w-0">
+                        <h3 className="font-semibold text-gray-900 truncate">{item.name}</h3>
+                        <p className="text-sm text-gray-600 mt-1">
+                          {item.subCategory || 'General'}
+                        </p>
+                        {item.bestseller && (
+                          <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 mt-2">
+                            <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                            </svg>
+                            Bestseller
+                          </span>
+                        )}
+                      </div>
+                      {/* Category */}
+                      <div className="flex justify-start md:justify-center">
+                        <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800">
+                          {item.category}
+                        </span>
+                      </div>
+                      {/* Price */}
+                      <div className="flex justify-start md:justify-center">
+                        <span className="text-lg font-bold text-gray-900">
+                          {currency}{item.price}
+                        </span>
+                      </div>
+                      {/* Actions */}
+                      <div className="flex justify-start md:justify-center">
+                        <button
+                          onClick={() => removeProduct(item._id)}
+                          disabled={isRemoving === item._id}
+                          className={`p-2 rounded-lg transition-all duration-300 ${
+                            isRemoving === item._id
+                              ? 'bg-gray-100 cursor-not-allowed'
+                              : 'bg-red-50 hover:bg-red-100 text-red-600 hover:text-red-700'
+                          }`}
+                          title="Remove product"
+                        >
+                          {isRemoving === item._id ? (
+                            <svg className="animate-spin w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                            </svg>
+                          ) : (
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                          )}
+                        </button>
+                      </div>
+                    </div>
+                  </React.Fragment>
+                ))}
+              </div>
+            </>
           )}
         </div>
       </div>

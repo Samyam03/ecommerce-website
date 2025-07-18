@@ -42,6 +42,23 @@ const Banner = () => {
               </p>
             </div>
 
+            {/* Mobile Image - Only visible on mobile */}
+            <div className='lg:hidden relative'>
+              <div className='relative'>
+                {/* Image container with modern styling */}
+                <div className='relative overflow-hidden rounded-3xl shadow-2xl bg-gradient-to-br from-gray-100 to-gray-200'>
+                  <img 
+                    className='w-full h-auto object-cover transition-transform duration-700 hover:scale-105' 
+                    src={assets.hero_img} 
+                    alt='Latest Fashion Collection'
+                  />
+                  
+                  {/* Overlay gradient */}
+                  <div className='absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent'></div>
+                </div>
+              </div>
+            </div>
+
             {/* CTA Section */}
             <div className='flex flex-col sm:flex-row gap-4 items-center justify-center lg:justify-start'>
               <button 
@@ -84,8 +101,8 @@ const Banner = () => {
             </div>
           </div>
 
-          {/* Hero Right Side - Image */}
-          <div className='relative order-1 lg:order-2'>
+          {/* Hero Right Side - Image - Only visible on desktop */}
+          <div className='relative order-1 lg:order-2 hidden lg:block'>
             <div className='relative'>
               {/* Image container with modern styling */}
               <div className='relative overflow-hidden rounded-3xl shadow-2xl bg-gradient-to-br from-gray-100 to-gray-200'>

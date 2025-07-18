@@ -434,34 +434,34 @@ const PlaceOrder = () => {
            <div className='w-full lg:w-96 space-y-8'>
              
              {/* Payment Method */}
-             <div className="bg-white rounded-2xl shadow-sm border border-gray-200/50 p-10">
-               <div className="mb-8">
+             <div className="bg-white rounded-2xl shadow-sm border border-gray-200/50 p-4 sm:p-8 lg:p-10 w-full">
+               <div className="mb-6 sm:mb-8">
                  <Title text1={'PAYMENT '} text2={'METHOD'} />
-                 <p className="text-gray-600 mt-3">Choose your preferred payment method</p>
+                 <p className="text-gray-600 mt-2 sm:mt-3">Choose your preferred payment method</p>
                </div>
                
-               <div className='space-y-6'>
+               <div className='space-y-4 sm:space-y-6'>
                  {/* Stripe Payment */}
                  <div 
                    onClick={() => setMethod('stripe')} 
-                   className={`flex items-center gap-5 p-5 border-2 rounded-xl cursor-pointer transition-all duration-300 hover:border-gray-400 ${method === 'stripe' ? 'border-gray-900 bg-gray-50' : 'border-gray-200'}`}
+                   className={`flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-5 p-4 sm:p-5 border-2 rounded-xl cursor-pointer transition-all duration-300 hover:border-gray-400 ${method === 'stripe' ? 'border-gray-900 bg-gray-50' : 'border-gray-200'}`}
                  >
-                   <div className={`w-6 h-6 border-2 rounded-full flex items-center justify-center transition-all duration-300 ${method === 'stripe' ? 'border-gray-900' : 'border-gray-300'}`}>
-                     {method === 'stripe' && <div className="w-3 h-3 bg-gray-900 rounded-full"></div>}
+                   <div className={`w-7 h-7 sm:w-6 sm:h-6 border-2 rounded-full flex items-center justify-center transition-all duration-300 ${method === 'stripe' ? 'border-gray-900' : 'border-gray-300'}`}>
+                     {method === 'stripe' && <div className="w-3.5 h-3.5 sm:w-3 sm:h-3 bg-gray-900 rounded-full"></div>}
                    </div>
-                   <img className='h-6' src={assets.stripe_logo} alt="Stripe" />
+                   <img className='h-7 sm:h-6' src={assets.stripe_logo} alt="Stripe" />
                    <span className="text-sm text-gray-600">Pay securely with Stripe</span>
                  </div>
 
                  {/* Cash on Delivery */}
                  <div 
                    onClick={() => setMethod('COD')} 
-                   className={`flex items-center gap-5 p-5 border-2 rounded-xl cursor-pointer transition-all duration-300 hover:border-gray-400 ${method === 'COD' ? 'border-gray-900 bg-gray-50' : 'border-gray-200'}`}
+                   className={`flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-5 p-4 sm:p-5 border-2 rounded-xl cursor-pointer transition-all duration-300 hover:border-gray-400 ${method === 'COD' ? 'border-gray-900 bg-gray-50' : 'border-gray-200'}`}
                  >
-                   <div className={`w-6 h-6 border-2 rounded-full flex items-center justify-center transition-all duration-300 ${method === 'COD' ? 'border-gray-900' : 'border-gray-300'}`}>
-                     {method === 'COD' && <div className="w-3 h-3 bg-gray-900 rounded-full"></div>}
+                   <div className={`w-7 h-7 sm:w-6 sm:h-6 border-2 rounded-full flex items-center justify-center transition-all duration-300 ${method === 'COD' ? 'border-gray-900' : 'border-gray-300'}`}>
+                     {method === 'COD' && <div className="w-3.5 h-3.5 sm:w-3 sm:h-3 bg-gray-900 rounded-full"></div>}
                    </div>
-                   <svg className="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                   <svg className="w-7 h-7 sm:w-6 sm:h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
                    </svg>
                    <span className="font-medium text-gray-900">CASH ON DELIVERY</span>
