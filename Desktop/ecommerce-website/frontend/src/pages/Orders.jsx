@@ -1,15 +1,16 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { ShopContext } from '../context/ShopContext';
+import { useState, useContext, useEffect, useCallback } from 'react';
+import { ShopContext } from '../context/ShopContextContext';
+import { backendUrl, currency } from '../../../constants';
 import Title from '../components/Title';
 import axios from 'axios';
 
 const Orders = () => {
-  const { backendUrl, token, currency } = useContext(ShopContext);
+  const { token } = useContext(ShopContext);
   const [orderData, setOrderData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [lastFetchTime, setLastFetchTime] = useState(null);
 
-  const loadOrderData = async (showLoading = true) => {
+  const loadOrderData = useCallback(async (showLoading = true) => {
     try {
       if (!token) {
         console.error('No token found');
@@ -42,14 +43,14 @@ const Orders = () => {
         setLoading(false);
       }
     }
-  };
+  }, [token]);
 
   // Initial load
   useEffect(() => {
     if (token) {
       loadOrderData();
     }
-  }, [token]);
+  }, [token, loadOrderData]);
 
   // More frequent polling (every 15 seconds instead of 30)
   useEffect(() => {
@@ -58,7 +59,7 @@ const Orders = () => {
     }, 15000); // 15 seconds
 
     return () => clearInterval(intervalId); // Cleanup on unmount
-  }, [token]);
+  }, [token, loadOrderData]);
 
   // Optional: Add color coding for status
   const getStatusColor = (status) => {
@@ -261,7 +262,7 @@ const Orders = () => {
               </div>
               <h3 className="text-2xl font-bold text-gray-900 mb-3">No orders yet</h3>
               <p className="text-gray-600 mb-6 max-w-md mx-auto">
-                You haven't placed any orders yet. Start shopping to see your orders here.
+                You haven&apos;t placed any orders yet. Start shopping to see your orders here.
               </p>
               <button 
                 onClick={() => window.location.href = '/collection'}

@@ -1,6 +1,6 @@
-import React, { useState, useContext, useEffect } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ShopContext } from '../context/ShopContext';
+import { ShopContext } from '../context/ShopContextContext';
 import ProductItem from './ProductItem';
 
 const BestSeller = () => {
@@ -35,7 +35,7 @@ const BestSeller = () => {
                     </h2>
                     
                     <p className='text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed'>
-                        Discover what everyone's talking about. These top-rated products 
+                        Discover what everyone&apos;s talking about. These top-rated products 
                         have won the hearts of our customers worldwide.
                     </p>
                 </div>

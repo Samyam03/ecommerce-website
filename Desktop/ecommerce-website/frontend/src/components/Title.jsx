@@ -1,4 +1,4 @@
-import React from 'react'
+import PropTypes from 'prop-types';
 
 const Title = ({text1,text2}) => {
   return (
@@ -13,5 +13,10 @@ const Title = ({text1,text2}) => {
     </div>
   )
 }
+
+Title.propTypes = {
+  text1: PropTypes.string.isRequired,
+  text2: PropTypes.string.isRequired,
+};
 
 export default Title

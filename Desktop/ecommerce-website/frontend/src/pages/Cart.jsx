@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { ShopContext } from '../context/ShopContext';
+import { useState, useEffect, useContext } from 'react';
+import { ShopContext } from '../context/ShopContextContext';
 import Title from '../components/Title';
 import { assets } from '../assets/assets';
 import CartTotal from '../components/CartTotal';
@@ -166,7 +166,7 @@ const Cart = () => {
               </div>
               <h3 className="text-2xl font-bold text-gray-900 mb-3">Your cart is empty</h3>
               <p className="text-gray-600 mb-6 max-w-md mx-auto">
-                Looks like you haven't added any items to your cart yet. Start shopping to fill it up!
+                Looks like you haven&apos;t added any items to your cart yet. Start shopping to fill it up!
               </p>
               <button 
                 onClick={() => navigate('/collection')}

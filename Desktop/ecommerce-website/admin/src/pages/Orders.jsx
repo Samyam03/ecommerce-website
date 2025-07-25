@@ -1,8 +1,9 @@
-import React, { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { useState } from "react";
 import axios from "axios";
-import { backendUrl, currency } from "../App";
+import { backendUrl, currency } from "../../../constants";
 import { toast } from "react-toastify";
+import PropTypes from 'prop-types';
 
 const Orders = ({ token }) => {
   const [orders, setOrders] = useState([]);
@@ -11,7 +12,7 @@ const Orders = ({ token }) => {
   const [filterStatus, setFilterStatus] = useState('All');
   const [updatingStatus, setUpdatingStatus] = useState(null);
 
-  const fetchAllOrders = async () => {
+  const fetchAllOrders = useCallback(async () => {
     if (!token) {
       return null;
     }
@@ -40,7 +41,7 @@ const Orders = ({ token }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token]);
 
   const statusHandler = async (event, orderId) => {
     const status = event.target.value;
@@ -75,7 +76,7 @@ const Orders = ({ token }) => {
 
   useEffect(() => {
     fetchAllOrders();
-  }, [token]);
+  }, [token, fetchAllOrders]);
 
   // Filter orders based on search term and status
   const filteredOrders = orders.filter(order => {
@@ -427,6 +428,10 @@ const Orders = ({ token }) => {
       </div>
     </div>
   );
+};
+
+Orders.propTypes = {
+  token: PropTypes.string.isRequired,
 };
 
 export default Orders;

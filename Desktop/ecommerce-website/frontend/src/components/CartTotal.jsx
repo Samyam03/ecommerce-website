@@ -1,10 +1,10 @@
-import React from 'react';
 import { useContext } from 'react';
-import { ShopContext } from '../context/ShopContext';
+import { ShopContext } from '../context/ShopContextContext';
+import { currency } from '../../../constants';
 import Title from './Title';
 
 const CartTotal = () => {
-    const { currency, getCartAmount } = useContext(ShopContext);
+    const { getCartAmount } = useContext(ShopContext);
 
     const subtotal = getCartAmount();
     const tax = subtotal * 0.1; // 10% tax

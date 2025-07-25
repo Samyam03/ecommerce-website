@@ -1,9 +1,9 @@
-import React from 'react'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
-import { backendUrl } from '../App'
+import { backendUrl, currency } from '../../../constants'
 import { toast } from 'react-toastify'
-import { currency } from '../App'
+import PropTypes from 'prop-types';
+import React from 'react';
 
 const List = ({ token }) => {
   const [list, setList] = useState([])
@@ -223,7 +223,7 @@ const List = ({ token }) => {
 
               {/* Table Body */}
               <div className="divide-y divide-gray-200/50">
-                {filteredProducts.map((item, index) => (
+                {filteredProducts.map((item) => (
                   <React.Fragment key={item._id}>
                     {/* Mobile Card */}
                     <div className="flex md:hidden items-center gap-3 py-4 px-4 border-b border-gray-100 last:border-b-0 bg-white rounded-lg shadow-sm mb-3">
@@ -352,5 +352,9 @@ const List = ({ token }) => {
     </div>
   )
 }
+
+List.propTypes = {
+  token: PropTypes.string.isRequired,
+};
 
 export default List

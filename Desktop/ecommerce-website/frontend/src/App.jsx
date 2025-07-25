@@ -1,4 +1,3 @@
-import React from 'react'
 import Home from "./pages/Home"
 import Navbar from "./components/Navbar"
 import Collection from "./pages/Collection"
@@ -12,8 +11,8 @@ import Orders from "./pages/Orders"
 import Footer from './components/Footer'
 import SearchBar from './components/SearchBar'
 import ScrollToTop from './components/ScrollToTop'
-import { BrowserRouter, Routes, Route } from "react-router";
-import { ToastContainer, toast } from 'react-toastify';
+import { Routes, Route } from "react-router";
+import { ToastContainer } from 'react-toastify';
 import Verify from './pages/Verify'
 const App = () => {
   return (

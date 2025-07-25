@@ -1,4 +1,3 @@
-import React from "react";
 import Title from "../components/Title";
 import { assets } from "../assets/assets";
 import NewsLetterBox from "../components/NewsLetterBox";
@@ -35,10 +34,7 @@ const About = () => {
                   everyone without compromising on quality.
                 </p>
                 <p className="text-lg text-gray-700 leading-relaxed">
-                  Every item in our collection is carefully curated to meet the
-                  highest standards. Whether you're looking for the latest trends or
-                  timeless classics, we strive to bring you the best in the industry.
-                  Customer satisfaction is at the heart of everything we do.
+                  Whether you&apos;re looking for the latest trends or timeless classics, we strive to bring you the best in the industry. Customer satisfaction is at the heart of everything we do.
                 </p>
               </div>
               

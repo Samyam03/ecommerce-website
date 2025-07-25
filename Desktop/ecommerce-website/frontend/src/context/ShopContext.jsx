@@ -1,15 +1,13 @@
-import React, { createContext, useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { ShopContext } from './ShopContextContext';
+import { backendUrl, currency } from '../../../constants';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
-// Create the ShopContext
-export const ShopContext = createContext();
+import PropTypes from 'prop-types';
 
 const ShopContextProvider = (props) => {
-    const currency = '$';
     const delivery_fee = 10;
-    const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
     // State variables
     const [search, setSearch] = useState('');
@@ -29,7 +27,7 @@ const ShopContextProvider = (props) => {
     }, [cartItems]);
 
     // Fetch products from the backend
-    const getProductsData = async () => {
+    const getProductsData = useCallback(async () => {
         try {
             const response = await axios.get(`${backendUrl}/api/product/list`);
             if (response.data.success) {
@@ -41,12 +39,12 @@ const ShopContextProvider = (props) => {
             console.error('Error fetching products:', error);
             toast.error(error.message);
         }
-    };
+    }, []);
 
     // Fetch products on component mount
     useEffect(() => {
         getProductsData();
-    }, []);
+    }, [getProductsData]);
 
     // Set the token from localStorage on component mount
     useEffect(() => {
@@ -199,6 +197,10 @@ const ShopContextProvider = (props) => {
             {props.children}
         </ShopContext.Provider>
     );
+};
+
+ShopContextProvider.propTypes = {
+  children: PropTypes.node.isRequired,
 };
 
 export default ShopContextProvider;

@@ -1,14 +1,15 @@
-import React, { useState, useContext, useEffect } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import Title from '../components/Title';
 import CartTotal from '../components/CartTotal';
 import { assets } from '../assets/assets';
-import { ShopContext } from '../context/ShopContext';
+import { ShopContext } from '../context/ShopContextContext';
+import { backendUrl } from '../../../constants';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 
 const PlaceOrder = () => {
   const [method, setMethod] = useState("COD");
-  const { products, delivery_fee, cartItems, setCartItems, getCartAmount, navigate, backendUrl, token, userId, setUserId } = useContext(ShopContext);
+  const { products, delivery_fee, cartItems, setCartItems, getCartAmount, navigate, token, userId, setUserId } = useContext(ShopContext);
 
   // Sync userId from local storage on component mount
   useEffect(() => {
@@ -75,7 +76,7 @@ const PlaceOrder = () => {
       };
 
       switch (method) {
-        case 'COD':
+        case 'COD': {
           const response = await axios.post(
             `${backendUrl}/api/order/place`,
             orderData,
@@ -94,8 +95,8 @@ const PlaceOrder = () => {
             toast.error(response.data.message);
           }
           break;
-
-        case 'stripe':
+        }
+        case 'stripe': {
           const responseStripe = await axios.post(
             `${backendUrl}/api/order/stripe`,
             {
@@ -116,10 +117,11 @@ const PlaceOrder = () => {
             toast.error(responseStripe.data.message);
           }
           break;
-
-        default:
+        }
+        default: {
           toast.error('Payment method not supported');
           break;
+        }
       }
     } catch (error) {
       console.error('Error processing order:', error);

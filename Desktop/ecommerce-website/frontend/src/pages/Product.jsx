@@ -1,30 +1,30 @@
-import React from 'react';
 import { useParams } from 'react-router-dom';
-import { useState, useEffect, useContext } from 'react';
-import { ShopContext } from '../context/ShopContext';
+import { useState, useEffect, useContext, useCallback } from 'react';
+import { ShopContext } from '../context/ShopContextContext';
+import { currency } from '../../../constants';
 import { assets } from '../assets/assets';
 import RelatedProducts from '../components/RelatedProducts';
 
 const Product = () => {
     const { productId } = useParams();
-    const { products, currency, addToCart } = useContext(ShopContext);
+    const { products, addToCart } = useContext(ShopContext);
     const [productData, setProductData] = useState(null);
     const [image, setImage] = useState("");
     const [size, setSize] = useState('');
 
-    const fetchProductData = () => {
+    const fetchProductData = useCallback(() => {
         const product = products.find(item => item._id === productId);
         if (product) {
             setProductData(product);
             setImage(product.image[0]);
         }
-    }
+    }, [productId, products]);
 
     useEffect(() => {
         if (products.length > 0) {
             fetchProductData();
         }
-    }, [productId, products]); // Added products to dependency array
+    }, [productId, products, fetchProductData]);
 
     if (!productData) {
         return <div className="h-screen"></div>; // Loading state

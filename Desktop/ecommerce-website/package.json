@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "form-data": "^4.0.4"
+  },
+  "devDependencies": {
+    "eslint-plugin-react": "^7.37.5"
+  }
+}

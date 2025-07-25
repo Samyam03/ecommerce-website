@@ -1,5 +1,5 @@
-import React from 'react'
 import {assets} from "../assets/assets"
+import PropTypes from 'prop-types';
 
 const Navbar = ({setToken, onSidebarToggle}) => {
   return (
@@ -57,5 +57,10 @@ const Navbar = ({setToken, onSidebarToggle}) => {
     </nav>
   )
 }
+
+Navbar.propTypes = {
+  setToken: PropTypes.func.isRequired,
+  onSidebarToggle: PropTypes.func.isRequired,
+};
 
 export default Navbar

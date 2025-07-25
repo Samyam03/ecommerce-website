@@ -1,8 +1,9 @@
-import React, { useEffect, useState, useContext } from 'react';
+import { useEffect, useState, useContext, useCallback } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { ShopContext } from '../context/ShopContext';
+import { ShopContext } from '../context/ShopContextContext';
+import { backendUrl } from '../../../constants';
 
 const Verify = () => {
     const [searchParams] = useSearchParams();
@@ -13,9 +14,9 @@ const Verify = () => {
     const canceled = searchParams.get('canceled');
 
     // Use ShopContext to access backendUrl, token, and setCartItems
-    const { backendUrl, token, setCartItems } = useContext(ShopContext);
+    const { token, setCartItems } = useContext(ShopContext);
 
-    const verifyPayment = async () => {
+    const verifyPayment = useCallback(async () => {
         setLoading(true);
         try {
             // Validate session_id
@@ -53,7 +54,7 @@ const Verify = () => {
         } finally {
             setLoading(false);
         }
-    };
+    }, [session_id, navigate, setCartItems, token]);
 
     useEffect(() => {
         if (canceled === 'true') {
@@ -64,7 +65,7 @@ const Verify = () => {
         if (session_id) {
             verifyPayment();
         }
-    }, [session_id, canceled]);
+    }, [session_id, canceled, navigate, verifyPayment]);
 
     return (
         <div>

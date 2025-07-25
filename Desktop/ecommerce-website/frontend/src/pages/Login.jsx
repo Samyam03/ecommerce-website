@@ -1,11 +1,12 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { ShopContext } from '../context/ShopContext';
+import { useState, useContext, useEffect } from 'react';
+import { ShopContext } from '../context/ShopContextContext';
+import { backendUrl } from '../../../constants';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
 const Login = () => {
   const [currentState, setCurrentState] = useState('Login');
-  const { token, setToken, navigate, backendUrl, setUserId } = useContext(ShopContext);
+  const { token, setToken, navigate, setUserId } = useContext(ShopContext);
 
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
@@ -43,7 +44,7 @@ const Login = () => {
           toast.error("You have entered an invalid email or password");
         }
       }
-    } catch (error) {
+    } catch {
       toast.error("The user with the provided email does not exist");
     }
   };
@@ -52,7 +53,7 @@ const Login = () => {
     if (token) {
       navigate('/');
     }
-  }, [token]);
+  }, [token, navigate]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white via-gray-50/30 to-white flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">

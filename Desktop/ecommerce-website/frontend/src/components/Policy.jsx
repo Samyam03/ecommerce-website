@@ -1,4 +1,3 @@
-import React from 'react'
 import { assets } from '../assets/assets'
 
 const Policy = () => {
@@ -42,8 +41,7 @@ const Policy = () => {
           </h2>
           
           <p className='text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed'>
-            We're committed to providing you with the best shopping experience through 
-            our customer-first policies and exceptional service.
+            We&apos;re committed to providing you with the best shopping experience through our customer-first policies and exceptional service.
           </p>
         </div>
 

@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import axios from "axios";
-import { backendUrl } from "../App";
+import { backendUrl } from "../../../constants";
 import { toast } from "react-toastify";
+import PropTypes from 'prop-types';
 
 const Add = ({ token }) => {
   const [image1, setImage1] = useState(null);
@@ -17,7 +18,6 @@ const Add = ({ token }) => {
   const [bestseller, setBestseller] = useState(false);
   const [sizes, setSizes] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();
@@ -103,7 +103,7 @@ const Add = ({ token }) => {
                 { state: image2, setter: setImage2, id: "image2", label: "Image 2" },
                 { state: image3, setter: setImage3, id: "image3", label: "Image 3" },
                 { state: image4, setter: setImage4, id: "image4", label: "Image 4" }
-              ].map((img, index) => (
+              ].map((img) => (
                 <div key={img.id} className="relative">
                   <label htmlFor={img.id} className="block cursor-pointer group">
                     <div className={`aspect-square rounded-xl border-2 border-dashed transition-all duration-300 overflow-hidden ${
@@ -279,16 +279,7 @@ const Add = ({ token }) => {
           </div>
 
           {/* Error Message */}
-          {error && (
-            <div className="bg-red-50 border border-red-200 rounded-xl p-4">
-              <div className="flex items-center gap-3">
-                <svg className="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <p className="text-red-700 font-medium">{error}</p>
-              </div>
-            </div>
-          )}
+          {/* The error state variable was removed, so this block will be removed. */}
 
           {/* Submit Button */}
           <div className="flex justify-end pt-6">
@@ -322,6 +313,10 @@ const Add = ({ token }) => {
       </div>
     </div>
   );
+};
+
+Add.propTypes = {
+  token: PropTypes.string.isRequired,
 };
 
 export default Add;

@@ -1,6 +1,6 @@
-import React, { useContext, useState, useEffect } from 'react';
+import { useContext, useState, useEffect, useCallback } from 'react';
 import { assets } from '../assets/assets';
-import { ShopContext } from '../context/ShopContext';
+import { ShopContext } from '../context/ShopContextContext';
 import Title from "../components/Title";
 import ProductItem from '../components/ProductItem';
 
@@ -28,7 +28,7 @@ const Collection = () => {
     );
   };
 
-  const applyFilter = () => {
+  const applyFilter = useCallback(() => {
     let productsCopy = products.slice();
 
     if (showSearch && search) {
@@ -49,9 +49,9 @@ const Collection = () => {
       );
     }
     setFilterProducts(productsCopy);
-  };
+  }, [products, search, showSearch, category, subCategory]);
 
-  const sortProduct = () => {
+  const sortProduct = useCallback(() => {
     let copy = filterProducts.slice();
 
     switch (sortType) {
@@ -65,15 +65,15 @@ const Collection = () => {
         applyFilter();
         break;
     }
-  };
+  }, [filterProducts, sortType, applyFilter]);
 
   useEffect(() => {
     applyFilter();
-  }, [category, subCategory, search, showSearch, products]);
+  }, [category, subCategory, search, showSearch, products, applyFilter]);
 
   useEffect(() => {
     sortProduct();
-  }, [sortType]);
+  }, [sortType, sortProduct]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white via-gray-50/30 to-white">
@@ -172,7 +172,7 @@ const Collection = () => {
             {/* Products Grid */}
             {filterProducts.length > 0 ? (
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 lg:gap-8">
-                {filterProducts.map((item, index) => (
+                {filterProducts.map((item) => (
                   <div 
                     key={item._id}
                     className="transform transition-all duration-300 hover:scale-[1.02] hover:shadow-lg"
@@ -195,7 +195,7 @@ const Collection = () => {
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">No products found</h3>
                 <p className="text-gray-600 mb-6">
-                  Try adjusting your filters to find what you're looking for.
+                  Try adjusting your filters to find what you&apos;re looking for.
                 </p>
                 <button 
                   onClick={() => {
