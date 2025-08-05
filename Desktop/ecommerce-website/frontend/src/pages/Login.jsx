@@ -63,7 +63,7 @@ const Login = () => {
         <div className='absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-tr from-gray-200/30 to-gray-300/20 rounded-full blur-3xl'></div>
       </div>
 
-      <div className="relative max-w-md w-full">
+      <div className="relative max-w-4xl w-full">
         {/* Header */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center gap-3 mb-6">
@@ -89,7 +89,7 @@ const Login = () => {
         </div>
 
         {/* Form */}
-        <div className="bg-white rounded-2xl shadow-xl border border-gray-200/50 p-8">
+        <div className="bg-white rounded-2xl shadow-xl border border-gray-200/50 p-8 max-w-md mx-auto">
           <form onSubmit={onSubmitHandler} className="space-y-6">
             
             {/* Name Input (Sign Up only) */}
@@ -185,7 +185,7 @@ const Login = () => {
 
           {/* Additional Info */}
           <div className="mt-6 pt-6 border-t border-gray-200">
-            <p className="text-center text-sm text-gray-600">
+            <p className="text-center text-sm text-gray-600 mb-4">
               {currentState === 'Login' 
                 ? "Don't have an account? " 
                 : "Already have an account? "
@@ -198,8 +198,91 @@ const Login = () => {
                 {currentState === 'Login' ? 'Sign up here' : 'Sign in here'}
               </button>
             </p>
-          </div>
+            
+
         </div>
+
+        </div>
+
+        {/* Demo Credentials Section - Separate from login form */}
+        {currentState === 'Login' && (
+          <div className="mt-8 bg-white rounded-2xl shadow-xl border border-gray-200/50 p-6 max-w-4xl mx-auto">
+            <div className="flex items-center gap-2 mb-4">
+              <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span className="text-lg font-semibold text-gray-700">Demo Accounts</span>
+            </div>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {/* Account Card 1 */}
+              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200/50 hover:border-blue-300/50 transition-all duration-300 hover:shadow-md">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                  <span className="text-sm font-semibold text-blue-700">Account 1</span>
+                </div>
+                <div className="space-y-2 text-sm">
+                  <div className="space-y-1">
+                    <span className="text-gray-500 font-medium text-xs">Email:</span>
+                    <div className="bg-white px-3 py-2 rounded-lg border border-gray-200">
+                      <code className="text-gray-700 font-mono text-sm">test@email.com</code>
+                    </div>
+                  </div>
+                  <div className="space-y-1">
+                    <span className="text-gray-500 font-medium text-xs">Password:</span>
+                    <div className="bg-white px-3 py-2 rounded-lg border border-gray-200">
+                      <code className="text-gray-700 font-mono text-sm">ExploreNow!2025</code>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Account Card 2 */}
+              <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-4 border border-green-200/50 hover:border-green-300/50 transition-all duration-300 hover:shadow-md">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                  <span className="text-sm font-semibold text-green-700">Account 2</span>
+                </div>
+                <div className="space-y-2 text-sm">
+                  <div className="space-y-1">
+                    <span className="text-gray-500 font-medium text-xs">Email:</span>
+                    <div className="bg-white px-3 py-2 rounded-lg border border-gray-200">
+                      <code className="text-gray-700 font-mono text-sm">sam@gmail.com</code>
+                    </div>
+                  </div>
+                  <div className="space-y-1">
+                    <span className="text-gray-500 font-medium text-xs">Password:</span>
+                    <div className="bg-white px-3 py-2 rounded-lg border border-gray-200">
+                      <code className="text-gray-700 font-mono text-sm">TalentPortal@2025</code>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Account Card 3 */}
+              <div className="bg-gradient-to-r from-purple-50 to-violet-50 rounded-xl p-4 border border-purple-200/50 hover:border-purple-300/50 transition-all duration-300 hover:shadow-md">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
+                  <span className="text-sm font-semibold text-purple-700">Account 3</span>
+                </div>
+                <div className="space-y-2 text-sm">
+                  <div className="space-y-1">
+                    <span className="text-gray-500 font-medium text-xs">Email:</span>
+                    <div className="bg-white px-3 py-2 rounded-lg border border-gray-200">
+                      <code className="text-gray-700 font-mono text-sm">view@example.com</code>
+                    </div>
+                  </div>
+                  <div className="space-y-1">
+                    <span className="text-gray-500 font-medium text-xs">Password:</span>
+                    <div className="bg-white px-3 py-2 rounded-lg border border-gray-200">
+                      <code className="text-gray-700 font-mono text-sm">TryThisDemo!88</code>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Security Notice */}
         <div className="mt-6 text-center">

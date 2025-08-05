@@ -32,7 +32,7 @@ const Login = ({setToken}) => {
         <div className='absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-tr from-gray-200/30 to-gray-300/20 rounded-full blur-3xl'></div>
       </div>
 
-      <div className="relative max-w-md w-full">
+      <div className="relative max-w-4xl w-full">
         {/* Header */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center gap-3 mb-6">
@@ -55,7 +55,7 @@ const Login = ({setToken}) => {
         </div>
 
         {/* Form */}
-        <div className="bg-white rounded-2xl shadow-xl border border-gray-200/50 p-8">
+        <div className="bg-white rounded-2xl shadow-xl border border-gray-200/50 p-8 max-w-md mx-auto">
           <form onSubmit={onSubmitHandler} className="space-y-6">
             
             {/* Email Input */}
@@ -115,6 +115,29 @@ const Login = ({setToken}) => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
               </svg>
               <span>Secure admin authentication</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Demo Credentials Section - Separate from login form */}
+        <div className="mt-8 bg-white rounded-2xl shadow-xl border border-gray-200/50 p-6 max-w-md mx-auto">
+          <div className="flex items-center gap-2 mb-4">
+            <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span className="text-lg font-semibold text-gray-700">Demo Credentials</span>
+          </div>
+          
+          <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl p-4 border border-gray-200/50">
+            <div className="space-y-2 text-sm">
+              <div className="flex items-center gap-2">
+                <span className="text-gray-500 font-medium">Email:</span>
+                <code className="bg-white px-3 py-2 rounded-lg border border-gray-200 text-gray-700 font-mono">admin@shopsphere.com</code>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-gray-500 font-medium">Password:</span>
+                <code className="bg-white px-3 py-2 rounded-lg border border-gray-200 text-gray-700 font-mono">Admin@2025!</code>
+              </div>
             </div>
           </div>
         </div>
