@@ -14,6 +14,18 @@ A modern web application for online shopping with admin dashboard, seamless user
 
 ---
 
+## 🔑 Demo Credentials
+
+- **Storefront (User) Accounts**
+  - **Account 1**: `test@email.com` / `ExploreNow!2025`
+  - **Account 2**: `sam@gmail.com` / `TalentPortal@2025`
+  - **Account 3**: `view@example.com` / `TryThisDemo!88`
+
+- **Admin Dashboard**
+  - `admin@shopsphere.com` / `Admin@2025!`
+
+---
+
 ## ✨ Features
 
 - Secure user authentication (sign up & sign in)
